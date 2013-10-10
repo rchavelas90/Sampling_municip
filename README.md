@@ -1,4 +1,4 @@
-Sampling_municip
+Sampling municip
 ================
 
 Methods to stratified sampling by municipalities in Mexico City
