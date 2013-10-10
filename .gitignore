@@ -5,5 +5,7 @@
 *-Ex.R
 .Rproj.user
 
-# CSV Files (Heavy stuff!)
+# CSV and other files (Heavy stuff!)
 CSV/
+Images/
+
