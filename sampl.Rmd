@@ -1,19 +1,90 @@
-Title
-========================================================
+```{r codigo_datos, echo=FALSE}
+## define vector to load specific columns
+nulls.vect<- c()
+for(i in 1:(46)){
+ nulls.vect <- c(nulls.vect,"NULL")
+}
+nulls.vect[c(6,7,12,33,34,44,46,47)] <- "character" # Use columns of "Clave de municipio", "Municipio", Name,
+# SCIAN code, SCIAN code name, Status, latutude and longitude
+#nulls.vect
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring web pages (click the **MD** toolbar button for help on Markdown).
+## Read file
+df <- read.csv("CSV/denue_1_09.csv",
+               skip=1,
+               header=F,
+               as.is=T,
+               colClasses=nulls.vect,
+               #nrows=50,
+               check.names=F
+               )
+## head(df,10)
 
-When you click the **Knit HTML** button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Add names to columns # Using columns of "Clave de municipio", "Municipio", Name,
+# SCIAN code, SCIAN code name, Status, latutude and longitude
+colnames(df) <- c("clav_municip","municip","nombre","cod_SCIAN","nombre_SCIAN","Status","latitude","longitude")
+# length(df$cod_SCIAN)
+# head(df)
+#Change class of numeric columns
+df$latitude <- as.numeric(df$latitude)
+df$longitude <- as.numeric(df$longitude)
+df$cod_SCIAN <- as.integer(df$cod_SCIAN)
+#str(df)
+#unique(df$municip)
 
-```{r}
-summary(cars)
+## Write a CSV file to observe how it worked
+# write.csv(df,file="CSV/actv_econ.csv")
+```
+
+```{r codigo_plots, echo=FALSE}
+library(ggplot2)
+library(ggmap)
+
+#latit <- mean(df2$latitude) ## latitude
+latit <- 19.43315 # Mexico City Center
+#longit <- mean(df2$longitude) ## longitud
+longit <- -99.13327 # Mexico City Center
+
+mapImageData <-  get_googlemap(center= c(lon = longit, 
+                                         lat = latit),
+                               maptype="roadmap",
+                               zoom=10,
+                               size=c(640,640),
+                               scale=2,
+                               color="bw"
+)
+
+map <- ggmap(mapImageData,
+             extent = "device", # "panel" keeps in axes, etc. or "device"
+             ylab = "Latitude",
+             xlab = "Longitude",
+             legend = "right")
+
+# png("map.png",height=1280,width=1280,pointsize=1,res=300)
+mapa_all <- map + geom_point(aes(x=longitude,y=latitude,colour=clav_municip),data=df,alpha = 1/1,size=1) # By "delegación"
+# of all data from DENUE
+```
+Propuesta de muestreo para comercios minoristas en el Distrito Federal
+==================================================================
+
+Se requiere realizar un muestreo de comercios minoristas en el Distrito Federal, con apoyo del grupo de Introducción a la Ingeniería Industrial.
+
+El muestreo se realizará bajo un enfoque de muestreo estratificado, sin embargo dada la complejidad del cuestionario y la dificultad que se tiene para estimar la información sobre la variabilidad de los resultados (variables), determinar un tamaño de muestra para cada estrato como lo propone Cochran (1977), al igual que otros recursos bibliográficos que tratan métodos de muestreo, en el cual se pueda determinar un tamaño de muestra óptimo con base en la variación de la variable de estudio no lo considero factible (para el momento).
+
+Por tal motivo, se propone una prueba piloto, con la cual se pueda muestrar una cantidad importante de comercios en la Ciudad de México (tomando como estratos cada Delegación) y que ésta información nos permita identificar el grado de precisión del estudio. A continuación se resume el proceso que se siguió para determinar el número de establecimientos y la ubicación de los establecimientos que se pretende encuestar
+
+Directorio Estadístico Nacional de Unidades Económicas [DENUE] (http://www.inegi.org.mx/est/contenidos/proyectos/denue/presentacion.aspx) 
+-------------
+
+La información sobre las unidades económicas se obtuvo de DENUE, que presenta información para identificar y ubicar más de 4 millones de establecimientos a nivel nacional. Para el distrito federal el DENUE 06/2012 provee información de más de 400,000 establecimientos
+
+
+```{r fig.width=10, fig.height=10, echo=FALSE}
+mapa_all
 ```
 
 You can also embed plots, for example:
 
-```{r fig.width=7, fig.height=6}
-plot(cars)
-```
+
 
 Clasificación de los negocios:
 

@@ -1,37 +1,31 @@
-Title
-========================================================
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring web pages (click the **MD** toolbar button for help on Markdown).
-
-When you click the **Knit HTML** button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 
-```r
-summary(cars)
+Propuesta de muestreo para comercios minoristas en el Distrito Federal
+==================================================================
+
+Se requiere realizar un muestreo de comercios minoristas en el Distrito Federal, con apoyo del grupo de Introducción a la Ingeniería Industrial.
+
+El muestreo se realizará bajo un enfoque de muestreo estratificado, sin embargo dada la complejidad del cuestionario y la dificultad que se tiene para estimar la información sobre la variabilidad de los resultados (variables), determinar un tamaño de muestra para cada estrato como lo propone Cochran (1977), al igual que otros recursos bibliográficos que tratan métodos de muestreo, en el cual se pueda determinar un tamaño de muestra óptimo con base en la variación de la variable de estudio no lo considero factible (para el momento).
+
+Por tal motivo, se propone una prueba piloto, con la cual se pueda muestrar una cantidad importante de comercios en la Ciudad de México (tomando como estratos cada Delegación) y que ésta información nos permita identificar el grado de precisión del estudio. A continuación se resume el proceso que se siguió para determinar el número de establecimientos y la ubicación de los establecimientos que se pretende encuestar
+
+Directorio Estadístico Nacional de Unidades Económicas [DENUE] (http://www.inegi.org.mx/est/contenidos/proyectos/denue/presentacion.aspx) 
+-------------
+
+La información sobre las unidades económicas se obtuvo de DENUE, que presenta información para identificar y ubicar más de 4 millones de establecimientos a nivel nacional. Para el distrito federal el DENUE 06/2012 provee información de más de 400,000 establecimientos
+
+
+
 ```
-
-```
-##      speed           dist    
-##  Min.   : 4.0   Min.   :  2  
-##  1st Qu.:12.0   1st Qu.: 26  
-##  Median :15.0   Median : 36  
-##  Mean   :15.4   Mean   : 43  
-##  3rd Qu.:19.0   3rd Qu.: 56  
-##  Max.   :25.0   Max.   :120
+## Error: object 'mapa_all' not found
 ```
 
 
 You can also embed plots, for example:
 
 
-```r
-plot(cars)
-```
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
-
-
-Clasificación de los negocios (por principal actividad):
+Clasificación de los negocios:
 
  - Gorcery Store: Tiendas muy pequeñas con un limitado espacio de venta, presentan una gran variedad de productos aunque en cantidades considerablemente menores a las de una convinence store  (Ej. Misceláneas, tiendas de abarrotes)
  - Convenience Store: Locales o instalaciones de tamaño medio, con un *amplio surtido* de artículos de uso diario o la venta de productos de un mismo segmento pero con una gran variedad de productos. Su función es ser una alternativa conveniente a un supermercado (Ej. 7/11, Oxxo, Modelorama)
@@ -45,11 +39,9 @@ Clasificación de los negocios (por principal actividad):
 
 
 
-* No deben registrar servicios o que vendan productos desconocidos
-* No registrar tiendas departamentales: Establecimientos grandes, con un amplio surtido de ropa, electrodomésticos, muebles, entre otras.
+*No deben registrar tiendas de servicios o que vendan productos desconocidos
+*No registrar tiendas departamentales: Establecimientos grandes, con un amplio surtido de ropa, electrodomésticos, muebles, entre otras.
 
 ** Para capacitación: Como "maximizar" las respuestas obtenidas 
 Sources
-
-
 [Directorio estadístico Nacinoal de Unidades Económicas] (http://www3.inegi.org.mx/sistemas/mapa/denue/default.aspx)

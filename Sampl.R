@@ -16,7 +16,7 @@ df <- read.csv("CSV/denue_1_09.csv",
                #nrows=50,
                check.names=F
                )
-head(df,10)
+## head(df,10)
 
 ## Add names to columns # Using columns of "Clave de municipio", "Municipio", Name,
 # SCIAN code, SCIAN code name, Status, latutude and longitude
