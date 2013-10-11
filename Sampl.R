@@ -73,8 +73,32 @@ head(tabla_frec2)
 sum(tabla_frec2$freq)
 write.csv(tabla_frec2,file="CSV/frec2.csv")
 
-## Get frequency by "Delegación"
-head(df2)
+## Get frequency by "Delegación" and percentage
+write.csv(df2,file="CSV/actv_econ2.csv")
+length(unique(df2$municip))
+tabla_frec3 <- table(df2$municip)
+tabla_frec_ord3 <- sort(tabla_frec3,decreasing=T)
+tabla_frec3<- as.data.frame(as.matrix(tabla_frec_ord3))
+tabla_frec3$deleg <- row.names(tabla_frec3)
+row.names(tabla_frec3) <- NULL
+colnames(tabla_frec3) <- c("frecuencia","Deleg")
+tabla_frec3 <- tabla_frec3[,c(2,1)]
+str(tabla_frec3)
+total_frec3 <- sum(tabla_frec3$frecuencia)
+tabla_frec3$Percent <- round(tabla_frec3$frecuencia/total_frec3,3)*100
+tabla_frec3
 
+## Get frequency by Status
+head(df2)
+unique(df2$Status)
+length(unique(df2$Status))
+tabla_frec4 <- table(df2$Status)
+tabla_frec_ord4 <- sort(tabla_frec4,decreasing=T)
+tabla_frec4<- as.data.frame(as.matrix(tabla_frec_ord4))
+tabla_frec4$Status <- row.names(tabla_frec4)
+row.names(tabla_frec4) <- NULL
+colnames(tabla_frec4) <- c("frecuencia","Status")
+tabla_frec4 <- tabla_frec4[,c(2,1)]
+tabla_frec4
 
 

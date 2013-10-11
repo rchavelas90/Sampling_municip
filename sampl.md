@@ -50,4 +50,6 @@ Clasificación de los negocios (por principal actividad):
 
 ** Para capacitación: Como "maximizar" las respuestas obtenidas 
 Sources
+
+
 [Directorio estadístico Nacinoal de Unidades Económicas] (http://www3.inegi.org.mx/sistemas/mapa/denue/default.aspx)
