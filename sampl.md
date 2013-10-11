@@ -31,7 +31,7 @@ plot(cars)
 ![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
 
 
-Clasificación de los negocios:
+Clasificación de los negocios (por principal actividad):
 
  - Gorcery Store: Tiendas muy pequeñas con un limitado espacio de venta, presentan una gran variedad de productos aunque en cantidades considerablemente menores a las de una convinence store  (Ej. Misceláneas, tiendas de abarrotes)
  - Convenience Store: Locales o instalaciones de tamaño medio, con un *amplio surtido* de artículos de uso diario o la venta de productos de un mismo segmento pero con una gran variedad de productos. Su función es ser una alternativa conveniente a un supermercado (Ej. 7/11, Oxxo, Modelorama)
@@ -45,7 +45,7 @@ Clasificación de los negocios:
 
 
 
-* No deben registrar tiendas de servicios o que vendan productos desconocidos
+* No deben registrar servicios o que vendan productos desconocidos
 * No registrar tiendas departamentales: Establecimientos grandes, con un amplio surtido de ropa, electrodomésticos, muebles, entre otras.
 
 ** Para capacitación: Como "maximizar" las respuestas obtenidas 
