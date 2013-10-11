@@ -1,4 +1,8 @@
-```{r codigo_datos, echo=FALSE}
+```{r cargar_datos, echo=FALSE,warning=FALSE}
+## Load libraries
+suppressPackageStartupMessages(library(googleVis))
+op <- options(gvis.plot.tag='chart') 
+
 ## define vector to load specific columns
 nulls.vect<- c()
 for(i in 1:(46)){
@@ -17,37 +21,48 @@ df <- read.csv("CSV/denue_1_09.csv",
                #nrows=50,
                check.names=F
                )
-## head(df,10)
+#head(df,10)
 
 ## Add names to columns # Using columns of "Clave de municipio", "Municipio", Name,
 # SCIAN code, SCIAN code name, Status, latutude and longitude
 colnames(df) <- c("clav_municip","municip","nombre","cod_SCIAN","nombre_SCIAN","Status","latitude","longitude")
-# length(df$cod_SCIAN)
-# head(df)
+
+
 #Change class of numeric columns
 df$latitude <- as.numeric(df$latitude)
 df$longitude <- as.numeric(df$longitude)
 df$cod_SCIAN <- as.integer(df$cod_SCIAN)
-#str(df)
-#unique(df$municip)
 
-## Write a CSV file to observe how it worked
-# write.csv(df,file="CSV/actv_econ.csv")
 ```
 
-```{r codigo_plots, echo=FALSE}
+
+Propuesta de muestreo para comercios minoristas en el Distrito Federal
+==================================================================
+
+Se requiere realizar un muestreo de comercios minoristas en el Distrito Federal, con apoyo del grupo de Introducción a la Ingeniería Industrial.
+
+El muestreo se realizará bajo un enfoque de muestreo estratificado, sin embargo dada la complejidad del cuestionario y la dificultad que se tiene para estimar la información sobre la variabilidad de los resultados (variables), determinar un tamaño de muestra para cada estrato como lo propone Cochran (1977), al igual que otros recursos bibliográficos que tratan métodos de muestreo, en el cual se pueda determinar un tamaño de muestra óptimo con base en la variación de la variable de estudio no lo considero factible (para el momento).
+
+Por tal motivo, se propone una prueba piloto, con la cual se pueda muestrar una cantidad importante de comercios en la Ciudad de México (tomando como estratos cada Delegación) y que ésta información nos permita identificar el grado de precisión del estudio. A continuación se resume el proceso que se siguió para determinar el número de establecimientos y la ubicación de los establecimientos que se pretende encuestar
+
+Directorio Estadístico Nacional de Unidades Económicas [DENUE] (http://www.inegi.org.mx/est/contenidos/proyectos/denue/presentacion.aspx) 
+------------------------------------------------------
+
+La información sobre las unidades económicas se obtuvo de DENUE, que presenta información para identificar y ubicar más de 4 millones de establecimientos a nivel nacional. Para el distrito federal el DENUE 06/2012 provee información de más de 400,000 establecimientos
+
+```{r codigo_plots, echo=FALSE, message=FALSE}
 library(ggplot2)
 library(ggmap)
 
-#latit <- mean(df2$latitude) ## latitude
-latit <- 19.43315 # Mexico City Center
-#longit <- mean(df2$longitude) ## longitud
-longit <- -99.13327 # Mexico City Center
+latit <- mean(df2$latitude) ## latitude
+#latit <- 19.43315 # Mexico City Center
+longit <- mean(df2$longitude) ## longitud
+#longit <- -99.13327 # Mexico City Center
 
 mapImageData <-  get_googlemap(center= c(lon = longit, 
                                          lat = latit),
                                maptype="roadmap",
-                               zoom=10,
+                               zoom=11,
                                size=c(640,640),
                                scale=2,
                                color="bw"
@@ -60,31 +75,86 @@ map <- ggmap(mapImageData,
              legend = "right")
 
 # png("map.png",height=1280,width=1280,pointsize=1,res=300)
-mapa_all <- map + geom_point(aes(x=longitude,y=latitude,colour=clav_municip),data=df,alpha = 1/1,size=1) # By "delegación"
-# of all data from DENUE
+mapa_all <- map + geom_point(aes(x=longitude,y=latitude,colour=clav_municip),data=df,alpha = 1/2,size=0.5)+
+ theme(legend.position="none")# By "delegación"
+
 ```
-Propuesta de muestreo para comercios minoristas en el Distrito Federal
-==================================================================
-
-Se requiere realizar un muestreo de comercios minoristas en el Distrito Federal, con apoyo del grupo de Introducción a la Ingeniería Industrial.
-
-El muestreo se realizará bajo un enfoque de muestreo estratificado, sin embargo dada la complejidad del cuestionario y la dificultad que se tiene para estimar la información sobre la variabilidad de los resultados (variables), determinar un tamaño de muestra para cada estrato como lo propone Cochran (1977), al igual que otros recursos bibliográficos que tratan métodos de muestreo, en el cual se pueda determinar un tamaño de muestra óptimo con base en la variación de la variable de estudio no lo considero factible (para el momento).
-
-Por tal motivo, se propone una prueba piloto, con la cual se pueda muestrar una cantidad importante de comercios en la Ciudad de México (tomando como estratos cada Delegación) y que ésta información nos permita identificar el grado de precisión del estudio. A continuación se resume el proceso que se siguió para determinar el número de establecimientos y la ubicación de los establecimientos que se pretende encuestar
-
-Directorio Estadístico Nacional de Unidades Económicas [DENUE] (http://www.inegi.org.mx/est/contenidos/proyectos/denue/presentacion.aspx) 
--------------
-
-La información sobre las unidades económicas se obtuvo de DENUE, que presenta información para identificar y ubicar más de 4 millones de establecimientos a nivel nacional. Para el distrito federal el DENUE 06/2012 provee información de más de 400,000 establecimientos
 
 
-```{r fig.width=10, fig.height=10, echo=FALSE}
+```{r grafica_all, fig.width=12, fig.height=12, echo=FALSE}
 mapa_all
 ```
 
-You can also embed plots, for example:
+Mapa de todos los establecimientos en registrados en el DENUE
+
+```{r codigo_freq_codig, echo=FALSE, message=FALSE}
+########### Match codes with used SCIAN codes
+df_cod <- read.csv("CSV/SCIAN_cod.csv",header=T,as.is=T)
+establecimientos_minoristas <- sum(df$cod_SCIAN %in% df_cod$SCIAN_por_incluir) # get number of retail store
+establecimientos_todos  <- length(df$cod_SCIAN) # get total number of store
+df2 <- df[df$cod_SCIAN %in% df_cod$SCIAN_por_incluir,]
 
 
+################# have a frecuency table of the SCIAN Code
+tabla_frec2 <- table(df2$cod_SCIAN)
+tabla_frec_ord2 <- sort(tabla_frec2,decreasing=T) # Sort frequency table
+df_frec <- as.data.frame(as.matrix(tabla_frec_ord2)) # COnvert it to DF
+df_frec$cod_SCIAN <- row.names(df_frec) #Remove names and use them as the code column
+row.names(df_frec) <- NULL
+
+## Merge both DF so we can have a DF with the sorted value of the freq and the description of the field
+order_frec <- match(df_frec$cod_SCIAN,df_cod$SCIAN_por_incluir)
+tabla_frec2 <- data.frame(df_frec,df_cod[order_frec,])
+## Reorder columns in DF
+tabla_frec2 <- data.frame(Cod_SCIAN=tabla_frec2$cod_SCIAN,
+                          Establec=tabla_frec2$V1,
+                          Descrip=tabla_frec2$Desc)
+
+```
+
+Selección de establecimientos
+------------------------------
+
+EL Sistema de Clasificación Industrial de América del Norte 2007 [SCIAN] (http://www.inegi.org.mx/sistemas/scian/contenidos/SCIAN%20M%C3%A9xico%202007%20(26enero2009\).pdf) presenta la nomenclatura usada en el DENUE para la clasificación de los establecimientos, para la selección de éstos se eligieron los siguientes tipos establecimientos, que en total equivalen a `r establecimientos_minoristas` establecimientos seleccionados de un total de `r establecimientos_todos` establecimientos y negocios que se presentan en el DENUE
+
+```{r print_freq_codig, echo=FALSE, message=FALSE}
+table1 <- gvisTable(tabla_frec2,options=list(page='enable',width=700,pageSize=20))
+plot(table1)
+```
+
+En la siguiente gráfica se observan todas la ubicaciones de los establecimientos seleccionados de acuerdo al código SCIAN
+
+```{r grafica_retail, fig.width=12, fig.height=12, echo=FALSE}
+mapa_retail <- map + geom_point(aes(x=longitude,y=latitude,colour=clav_municip),data=df2,alpha = 1/2,size=0.5)+
+ theme(legend.position="none")# By "delegación"
+mapa_retail
+```
+
+Porcentaje por delegación y tamaño de muestra
+---------------------------------------------
+El muestreo de los comercios se realizará con base en la proporción de comercios que se encuentran en cada delegación, Cochran menciona que la precisión adquirida bajo este esquema es menor a la que se obtiene si se utiliza una selección óptima de tamaños de muestra, pero el método de selección por proporción es ideal para la prueba piloto
+
+```{r codigo_freq_deleg, echo=FALSE, message=FALSE}
+## Get frequency by "Delegación" and percentage
+tabla_frec3 <- table(df2$municip)
+tabla_frec_ord3 <- sort(tabla_frec3,decreasing=T)
+tabla_frec3<- as.data.frame(as.matrix(tabla_frec_ord3))
+tabla_frec3$deleg <- row.names(tabla_frec3)
+row.names(tabla_frec3) <- NULL
+colnames(tabla_frec3) <- c("Establec","Deleg")
+tabla_frec3 <- tabla_frec3[,c(2,1)]
+total_frec3 <- sum(tabla_frec3$Establec)
+tabla_frec3$Porcent <- round(tabla_frec3$Establec/total_frec3,3)
+
+# determine number of surveys
+total_sample <- 200
+tabla_frec3$Muestra <- ceiling(tabla_frec3$Porcent*total_sample)
+table2 <- gvisTable(tabla_frec3,options=list(page='enable',width=600,pageSize=16))
+plot(table2)
+```
+
+Otros puntos del muestreo
+---------------------
 
 Clasificación de los negocios:
 
@@ -104,5 +174,7 @@ Clasificación de los negocios:
 *No registrar tiendas departamentales: Establecimientos grandes, con un amplio surtido de ropa, electrodomésticos, muebles, entre otras.
 
 ** Para capacitación: Como "maximizar" las respuestas obtenidas 
-Sources
-[Directorio estadístico Nacinoal de Unidades Económicas] (http://www3.inegi.org.mx/sistemas/mapa/denue/default.aspx)
+
+Referencias
+
+
