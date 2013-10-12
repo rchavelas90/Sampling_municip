@@ -5,7 +5,7 @@
 Propuesta de muestreo para comercios minoristas en el Distrito Federal
 ==================================================================
 
-*Los textos de las gráficas y tablas pueden contener errores, tipográficos, aún es está revisando como corregirlos*
+*Los textos de las gráficas y tablas pueden contener errores de codificación que dificultan la lectura, aún es está revisando como corregirlos*
 
 Se requiere realizar un muestreo de comercios minoristas en el Distrito Federal, con apoyo del grupo de Introducción a la Ingeniería Industrial, del Tecnológico de Monterrey, Campus Toluca
 
@@ -36,14 +36,14 @@ Selección de establecimientos
 EL Sistema de Clasificación Industrial de América del Norte 2007 [SCIAN] (http://www.inegi.org.mx/sistemas/scian/contenidos/SCIAN%20M%C3%A9xico%202007%20(26enero2009\).pdf) presenta la nomenclatura usada en el DENUE para la clasificación de los establecimientos, para la selección de éstos se eligieron los siguientes tipos establecimientos, que en total equivalen a 171244 establecimientos seleccionados de un total de 429091 establecimientos y negocios que se presentan en el DENUE
 
 <!-- Table generated in R 3.0.1 by googleVis 0.4.3 package -->
-<!-- Fri Oct 11 18:50:03 2013 -->
+<!-- Fri Oct 11 19:04:46 2013 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID4e2380a80a5 () {
+function gvisDataTableID5912d095db3 () {
   var data = new google.visualization.DataTable();
   var datajson =
 [
@@ -301,8 +301,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID4e2380a80a5() {
-  var data = gvisDataTableID4e2380a80a5();
+function drawChartTableID5912d095db3() {
+  var data = gvisDataTableID5912d095db3();
   var options = {};
 options["allowHtml"] = true;
 options["page"] = "enable";
@@ -310,7 +310,7 @@ options["width"] =    700;
 options["pageSize"] =     20;
 
      var chart = new google.visualization.Table(
-       document.getElementById('TableID4e2380a80a5')
+       document.getElementById('TableID5912d095db3')
      );
      chart.draw(data,options);
     
@@ -334,9 +334,9 @@ options["pageSize"] =     20;
     pkgs.push(chartid);
 
   // Add the drawChart function to the global list of callbacks
-  callbacks.push(drawChartTableID4e2380a80a5);
+  callbacks.push(drawChartTableID5912d095db3);
 })();
-function displayChartTableID4e2380a80a5() {
+function displayChartTableID5912d095db3() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -360,11 +360,11 @@ function displayChartTableID4e2380a80a5() {
  </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID4e2380a80a5"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID5912d095db3"></script>
  
 <!-- divChart -->
   
-<div id="TableID4e2380a80a5"
+<div id="TableID5912d095db3"
   style="width: 700px; height: 500px;">
 </div>
 
@@ -385,14 +385,14 @@ Para obtener el tamaño de muestra suponemos que podremos realizar aproximadamen
 
 
 <!-- Table generated in R 3.0.1 by googleVis 0.4.3 package -->
-<!-- Fri Oct 11 18:50:17 2013 -->
+<!-- Fri Oct 11 19:05:05 2013 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID4e23983ed61 () {
+function gvisDataTableID59141e6a9de () {
   var data = new google.visualization.DataTable();
   var datajson =
 [
@@ -502,14 +502,15 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID4e23983ed61() {
-  var data = gvisDataTableID4e23983ed61();
+function drawChartTableID59141e6a9de() {
+  var data = gvisDataTableID59141e6a9de();
   var options = {};
 options["allowHtml"] = true;
 options["width"] =    600;
+options["height"] =    400;
 
      var chart = new google.visualization.Table(
-       document.getElementById('TableID4e23983ed61')
+       document.getElementById('TableID59141e6a9de')
      );
      chart.draw(data,options);
     
@@ -533,9 +534,9 @@ options["width"] =    600;
     pkgs.push(chartid);
 
   // Add the drawChart function to the global list of callbacks
-  callbacks.push(drawChartTableID4e23983ed61);
+  callbacks.push(drawChartTableID59141e6a9de);
 })();
-function displayChartTableID4e23983ed61() {
+function displayChartTableID59141e6a9de() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -559,29 +560,29 @@ function displayChartTableID4e23983ed61() {
  </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID4e23983ed61"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID59141e6a9de"></script>
  
 <!-- divChart -->
   
-<div id="TableID4e23983ed61"
-  style="width: 600px; height: 500px;">
+<div id="TableID59141e6a9de"
+  style="width: 600px; height: 400px;">
 </div>
 
 
-Viendo que el tamaño de muestra para cada delegación es considerablemente bajo y que algunas delegaciones tienen tamaños de muestra aún más bajos (últimos 7), se pudieran quitar estas delegaciones de la muestra, además de que son las más lejanas y más grandes por lo que complicarían mucho el muestreo y sería muy difícil para los equipos viajar tanto por uno o dos puntos. El plan de muestreo queda como siguie
+Viendo que el tamaño de muestra para cada delegación es considerablemente bajo y que algunas delegaciones tienen tamaños de muestra aún más bajos (últimos 7 registros), se pudieran quitar estas delegaciones de la muestra, además de que son las más lejanas y más grandes por lo que complicarían mucho el muestreo y sería muy difícil para los equipos viajar tanto por uno o dos puntos. El plan de muestreo queda como siguie
 
 
 
 
 <!-- Table generated in R 3.0.1 by googleVis 0.4.3 package -->
-<!-- Fri Oct 11 18:50:17 2013 -->
+<!-- Fri Oct 11 19:05:06 2013 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID4e245598c7 () {
+function gvisDataTableID591e9a4f9f () {
   var data = new google.visualization.DataTable();
   var datajson =
 [
@@ -649,8 +650,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID4e245598c7() {
-  var data = gvisDataTableID4e245598c7();
+function drawChartTableID591e9a4f9f() {
+  var data = gvisDataTableID591e9a4f9f();
   var options = {};
 options["allowHtml"] = true;
 options["page"] = "enable";
@@ -658,7 +659,7 @@ options["width"] =    600;
 options["height"] =    200;
 
      var chart = new google.visualization.Table(
-       document.getElementById('TableID4e245598c7')
+       document.getElementById('TableID591e9a4f9f')
      );
      chart.draw(data,options);
     
@@ -682,9 +683,9 @@ options["height"] =    200;
     pkgs.push(chartid);
 
   // Add the drawChart function to the global list of callbacks
-  callbacks.push(drawChartTableID4e245598c7);
+  callbacks.push(drawChartTableID591e9a4f9f);
 })();
-function displayChartTableID4e245598c7() {
+function displayChartTableID591e9a4f9f() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -708,11 +709,11 @@ function displayChartTableID4e245598c7() {
  </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID4e245598c7"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID591e9a4f9f"></script>
  
 <!-- divChart -->
   
-<div id="TableID4e245598c7"
+<div id="TableID591e9a4f9f"
   style="width: 600px; height: 200px;">
 </div>
 
@@ -737,14 +738,25 @@ Clasificación de los negocios:
  - Drugstores: Tiendas especializadas en medicamentos, aunque pueden también vender otros productos en menor cantidad.
  - Others (Tianguis de calle, mercados tradicionales)
 
+Anexo 2: Delegaciones del distrito federal
+-----------------------------
+Mapa en [link](http://www.ambientalisto.com/wp-content/uploads/2011/05/delegaciones.jpg)
+
+
+Anexo 3: Otras Consideraciones
+-----------------------------
 
 
 *No deben registrar servicios o que vendan productos desconocidos
 *No registrar tiendas departamentales: Establecimientos grandes, con un amplio surtido de ropa, electrodomésticos, muebles, entre otras.
 
-** Para capacitación: Como "maximizar" las respuestas obtenidas 
+** Para capacitación: Como "maximizar" las respuestas obtenidas? 
 
 
 *Referencias*
+
 Cochran, W (1977) Sampling Techniques (3rd Edition) New York: John Wiley & Sons
 
+Anexo 2: Delegaciones del distrito federal
+-----------------------------
+Mapa en [link](http://www.ambientalisto.com/wp-content/uploads/2011/05/delegaciones.jpg)

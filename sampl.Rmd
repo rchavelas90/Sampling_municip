@@ -158,7 +158,7 @@ table2 <- gvisTable(tabla_frec3,options=list(width=600,height=400))
 plot(table2)
 ```
 
-Viendo que el tamaño de muestra para cada delegación es considerablemente bajo y que algunas delegaciones tienen tamaños de muestra aún más bajos (últimos 7), se pudieran quitar estas delegaciones de la muestra, además de que son las más lejanas y más grandes por lo que complicarían mucho el muestreo y sería muy difícil para los equipos viajar tanto por uno o dos puntos. El plan de muestreo queda como siguie
+Viendo que el tamaño de muestra para cada delegación es considerablemente bajo y que algunas delegaciones tienen tamaños de muestra aún más bajos (últimos 7 registros), se pudieran quitar estas delegaciones de la muestra, además de que son las más lejanas y más grandes por lo que complicarían mucho el muestreo y sería muy difícil para los equipos viajar tanto por uno o dos puntos. El plan de muestreo queda como siguie
 
 ```{r codigo_freq_deleg2, echo=FALSE, message=FALSE}
 ## Get frequency by "Delegación" and percentage (without last 7 )
@@ -202,14 +202,21 @@ Clasificación de los negocios:
  - Drugstores: Tiendas especializadas en medicamentos, aunque pueden también vender otros productos en menor cantidad.
  - Others (Tianguis de calle, mercados tradicionales)
 
+Anexo 2: Delegaciones del distrito federal
+-----------------------------
+Mapa en [link](http://www.ambientalisto.com/wp-content/uploads/2011/05/delegaciones.jpg)
+
+
+Anexo 3: Otras Consideraciones
+-----------------------------
 
 
 *No deben registrar servicios o que vendan productos desconocidos
 *No registrar tiendas departamentales: Establecimientos grandes, con un amplio surtido de ropa, electrodomésticos, muebles, entre otras.
 
-** Para capacitación: Como "maximizar" las respuestas obtenidas 
+** Para capacitación: Como "maximizar" las respuestas obtenidas? 
 
 
 *Referencias*
-Cochran, W (1977) Sampling Techniques (3rd Edition) New York: John Wiley & Sons
 
+Cochran, W (1977) Sampling Techniques (3rd Edition) New York: John Wiley & Sons
