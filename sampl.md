@@ -36,14 +36,14 @@ Selección de establecimientos
 EL Sistema de Clasificación Industrial de América del Norte 2007 [SCIAN] (http://www.inegi.org.mx/sistemas/scian/contenidos/SCIAN%20M%C3%A9xico%202007%20(26enero2009\).pdf) presenta la nomenclatura usada en el DENUE para la clasificación de los establecimientos, para la selección de éstos se eligieron los siguientes tipos establecimientos, que en total equivalen a 171244 establecimientos seleccionados de un total de 429091 establecimientos y negocios que se presentan en el DENUE
 
 <!-- Table generated in R 3.0.1 by googleVis 0.4.3 package -->
-<!-- Fri Oct 11 19:04:46 2013 -->
+<!-- Fri Oct 11 19:53:27 2013 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID5912d095db3 () {
+function gvisDataTableID6dd7a8bbe0e () {
   var data = new google.visualization.DataTable();
   var datajson =
 [
@@ -301,8 +301,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID5912d095db3() {
-  var data = gvisDataTableID5912d095db3();
+function drawChartTableID6dd7a8bbe0e() {
+  var data = gvisDataTableID6dd7a8bbe0e();
   var options = {};
 options["allowHtml"] = true;
 options["page"] = "enable";
@@ -310,7 +310,7 @@ options["width"] =    700;
 options["pageSize"] =     20;
 
      var chart = new google.visualization.Table(
-       document.getElementById('TableID5912d095db3')
+       document.getElementById('TableID6dd7a8bbe0e')
      );
      chart.draw(data,options);
     
@@ -334,9 +334,9 @@ options["pageSize"] =     20;
     pkgs.push(chartid);
 
   // Add the drawChart function to the global list of callbacks
-  callbacks.push(drawChartTableID5912d095db3);
+  callbacks.push(drawChartTableID6dd7a8bbe0e);
 })();
-function displayChartTableID5912d095db3() {
+function displayChartTableID6dd7a8bbe0e() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -360,11 +360,11 @@ function displayChartTableID5912d095db3() {
  </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID5912d095db3"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID6dd7a8bbe0e"></script>
  
 <!-- divChart -->
   
-<div id="TableID5912d095db3"
+<div id="TableID6dd7a8bbe0e"
   style="width: 700px; height: 500px;">
 </div>
 
@@ -385,14 +385,14 @@ Para obtener el tamaño de muestra suponemos que podremos realizar aproximadamen
 
 
 <!-- Table generated in R 3.0.1 by googleVis 0.4.3 package -->
-<!-- Fri Oct 11 19:05:05 2013 -->
+<!-- Fri Oct 11 19:53:40 2013 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID59141e6a9de () {
+function gvisDataTableID6dd6c6ac7fc () {
   var data = new google.visualization.DataTable();
   var datajson =
 [
@@ -502,15 +502,15 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID59141e6a9de() {
-  var data = gvisDataTableID59141e6a9de();
+function drawChartTableID6dd6c6ac7fc() {
+  var data = gvisDataTableID6dd6c6ac7fc();
   var options = {};
 options["allowHtml"] = true;
 options["width"] =    600;
 options["height"] =    400;
 
      var chart = new google.visualization.Table(
-       document.getElementById('TableID59141e6a9de')
+       document.getElementById('TableID6dd6c6ac7fc')
      );
      chart.draw(data,options);
     
@@ -534,9 +534,9 @@ options["height"] =    400;
     pkgs.push(chartid);
 
   // Add the drawChart function to the global list of callbacks
-  callbacks.push(drawChartTableID59141e6a9de);
+  callbacks.push(drawChartTableID6dd6c6ac7fc);
 })();
-function displayChartTableID59141e6a9de() {
+function displayChartTableID6dd6c6ac7fc() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -560,11 +560,11 @@ function displayChartTableID59141e6a9de() {
  </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID59141e6a9de"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID6dd6c6ac7fc"></script>
  
 <!-- divChart -->
   
-<div id="TableID59141e6a9de"
+<div id="TableID6dd6c6ac7fc"
   style="width: 600px; height: 400px;">
 </div>
 
@@ -575,14 +575,14 @@ Viendo que el tamaño de muestra para cada delegación es considerablemente bajo
 
 
 <!-- Table generated in R 3.0.1 by googleVis 0.4.3 package -->
-<!-- Fri Oct 11 19:05:06 2013 -->
+<!-- Fri Oct 11 19:53:41 2013 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID591e9a4f9f () {
+function gvisDataTableID6dd566fa8ff () {
   var data = new google.visualization.DataTable();
   var datajson =
 [
@@ -650,8 +650,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID591e9a4f9f() {
-  var data = gvisDataTableID591e9a4f9f();
+function drawChartTableID6dd566fa8ff() {
+  var data = gvisDataTableID6dd566fa8ff();
   var options = {};
 options["allowHtml"] = true;
 options["page"] = "enable";
@@ -659,7 +659,7 @@ options["width"] =    600;
 options["height"] =    200;
 
      var chart = new google.visualization.Table(
-       document.getElementById('TableID591e9a4f9f')
+       document.getElementById('TableID6dd566fa8ff')
      );
      chart.draw(data,options);
     
@@ -683,9 +683,9 @@ options["height"] =    200;
     pkgs.push(chartid);
 
   // Add the drawChart function to the global list of callbacks
-  callbacks.push(drawChartTableID591e9a4f9f);
+  callbacks.push(drawChartTableID6dd566fa8ff);
 })();
-function displayChartTableID591e9a4f9f() {
+function displayChartTableID6dd566fa8ff() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -709,11 +709,11 @@ function displayChartTableID591e9a4f9f() {
  </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID591e9a4f9f"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID6dd566fa8ff"></script>
  
 <!-- divChart -->
   
-<div id="TableID591e9a4f9f"
+<div id="TableID6dd566fa8ff"
   style="width: 600px; height: 200px;">
 </div>
 
@@ -751,12 +751,9 @@ Anexo 3: Otras Consideraciones
 *No registrar tiendas departamentales: Establecimientos grandes, con un amplio surtido de ropa, electrodomésticos, muebles, entre otras.
 
 ** Para capacitación: Como "maximizar" las respuestas obtenidas? 
+** Recomendar que antes revisen TODAS las ubicaciones y que se enfoquen en avenidas principales (seguras)?
 
 
 *Referencias*
 
 Cochran, W (1977) Sampling Techniques (3rd Edition) New York: John Wiley & Sons
-
-Anexo 2: Delegaciones del distrito federal
------------------------------
-Mapa en [link](http://www.ambientalisto.com/wp-content/uploads/2011/05/delegaciones.jpg)

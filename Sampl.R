@@ -92,6 +92,10 @@ table3 <- gvisTable(tabla_frec4,options=list(page='enable',width=600,pageSize=16
 plot(table3)
 
 
+
+
+
+
 ## Get frequency by Status
 tabla_frec4 <- table(df2$Status)
 tabla_frec_ord4 <- sort(tabla_frec4,decreasing=T)
