@@ -2,10 +2,10 @@
 library(ggplot2)
 library(ggmap)
 
-latit <- mean(df2$latitude) ## latitude
-#latit <- 19.43315 # Mexico City Center
-longit <- mean(df2$longitude) ## longitud
-#longit <- -99.13327 # Mexico City Center
+#latit <- mean(df2$latitude) ## latitude
+latit <- 19.43315 # Mexico City Center
+#longit <- mean(df2$longitude) ## longitud
+longit <- -99.13327 # Mexico City Center
 
 mapImageData <-  get_googlemap(center= c(lon = longit, 
                                          lat = latit),
@@ -28,6 +28,22 @@ mapa_all <- map + geom_point(aes(x=longitude,y=latitude,colour=clav_municip),dat
 mapa_all
 # dev.off()
 
-mapa_retail <- map + geom_point(aes(x=longitude,y=latitude,colour=clav_municip),data=df2,alpha = 1/2,size=0.5)+
+## plot all retail stores in Mexico City by "delegación"
+alp <-1 # define alppha levelof geom_point  (all data =  0.5)
+siz <-2 # define size (all data =  0.5)
+mapa_retail <- map + geom_point(aes(x=longitude,y=latitude,colour=clav_municip),
+                                data=df2,alpha = alp,size=siz)+
+ theme(legend.position="none")# By "delegación"
+mapa_retail + geom_path(data=municip_shpf_DF_asdf,
+                        mapping=aes(long,lat,group=group),
+                        color="black")
+
+
+
+## plot all retail stores in Mexico City by "delegación"
+alp <-1 # define alppha levelof geom_point  (all data =  0.5)
+siz <-2 # define size (all data =  0.5)
+mapa_retail <- ggplot() + geom_point(aes(x=longitude,y=latitude,colour=clav_municip),
+                                data=df2,alpha = alp,size=siz)+
  theme(legend.position="none")# By "delegación"
 mapa_retail

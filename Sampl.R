@@ -17,7 +17,7 @@ df <- read.csv("CSV/denue_1_09.csv",
                header=F,
                as.is=T,
                colClasses=nulls.vect,
-               #nrows=50,
+               #nrows=100,
                check.names=F
                )
 #head(df,10)
@@ -37,7 +37,6 @@ df_cod <- read.csv("CSV/SCIAN_cod.csv",header=T,as.is=T)
 establecimientos_minoristas <- sum(df$cod_SCIAN %in% df_cod$SCIAN_por_incluir) # get number of retail store
 establecimientos_todos  <- length(df$cod_SCIAN) # get total number of store
 df2 <- df[df$cod_SCIAN %in% df_cod$SCIAN_por_incluir,]
-
 
 ################# have a frecuency table of the SCIAN Code
 tabla_frec2 <- table(df2$cod_SCIAN)
@@ -94,6 +93,13 @@ plot(table3)
 
 
 
+
+############ Get a sample of the retail stores ##################### 
+############ this is only to ease the map creation, it can be removed later
+set.seed(1) # set seed to replicate results
+row_samp <- sample(nrow(df2),200) ## sample the rows of df2
+df2 <- df2[row_samp,] ## subset with the sample rows
+rm("df")
 
 
 ## Get frequency by Status

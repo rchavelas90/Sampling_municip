@@ -2,9 +2,10 @@
 
 # Extract random sample from delegación
 set.seed(1)
-i <- 2
+i <- 1
 index <- which(df2$municip == tabla_frec4$Deleg[i])
 df4 <- df2[sample(index,tabla_frec4$Muestra[i]),]
+ # df4 <- df2[index,]
 head(df4)
 length(df4$nombre)
 
