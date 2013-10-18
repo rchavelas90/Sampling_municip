@@ -32,7 +32,7 @@ df$latitude <- as.numeric(df$latitude)
 df$longitude <- as.numeric(df$longitude)
 df$cod_SCIAN <- as.integer(df$cod_SCIAN)
 
-########### Match codes with used SCIAN codes
+# Match codes with used SCIAN codes
 df_cod <- read.csv("CSV/SCIAN_cod.csv",header=T,as.is=T)
 establecimientos_minoristas <- sum(df$cod_SCIAN %in% df_cod$SCIAN_por_incluir) # get number of retail store
 establecimientos_todos  <- length(df$cod_SCIAN) # get total number of store
@@ -54,9 +54,10 @@ tabla_frec2 <- data.frame(Cod_SCIAN=tabla_frec2$cod_SCIAN,
                           Descrip=tabla_frec2$Desc)
 
 table1 <- gvisTable(tabla_frec2,options=list(page='enable',width=700,pageSize=20))
-plot(table1)
 
-## Get frequency by "Delegación" and percentage
+# plot(table1)
+
+########################## Get frequency by "Delegación" and percentage
 tabla_frec3 <- table(df2$municip)
 tabla_frec_ord3 <- sort(tabla_frec3,decreasing=T)
 tabla_frec3<- as.data.frame(as.matrix(tabla_frec_ord3))
@@ -70,8 +71,8 @@ tabla_frec3$Porcent <- round(tabla_frec3$Establec/total_frec3,3)
 # determine number of surveys
 total_sample <- 200
 tabla_frec3$Muestra <- ceiling(tabla_frec3$Porcent*total_sample)
-table2 <- gvisTable(tabla_frec3,options=list(page='enable',width=600,pageSize=16))
-plot(table2)
+table2 <- gvisTable(tabla_frec3,options=list(page='enable',width=600,height=400))
+## plot(table2)
 
 ## Get frequency by "Delegación" and percentage (without last 7 )
 tabla_frec4 <- table(df2$municip)
@@ -87,8 +88,8 @@ tabla_frec4$Porcent <- round(tabla_frec4$Establec/total_frec4,3)
 # determine number of surveys
 total_sample <- 200
 tabla_frec4$Muestra <- ceiling(tabla_frec4$Porcent*total_sample)
-table3 <- gvisTable(tabla_frec4,options=list(page='enable',width=600,pageSize=16))
-plot(table3)
+table3 <- gvisTable(tabla_frec4,options=list(page='enable',width=600,height=200))
+# plot(table3)
 
 
 

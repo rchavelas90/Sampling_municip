@@ -1,7 +1,7 @@
-```{r cargar_datos, echo=FALSE}
+```{r cargar_datos, echo=FALSE,message=FALSE}
 ## Load libraries
 suppressPackageStartupMessages(library(googleVis))
-op <- options(gvis.plot.tag="chart") 
+op <- options(gvis.plot.tag="chart") #NULL
 
 ## define vector to load specific columns
 nulls.vect<- c()
@@ -18,7 +18,7 @@ df <- read.csv("CSV/denue_1_09.csv",
                header=F,
                as.is=T,
                colClasses=nulls.vect,
-               #nrows=50,
+               #nrows=100,
                check.names=F
                )
 #head(df,10)
@@ -33,33 +33,116 @@ df$latitude <- as.numeric(df$latitude)
 df$longitude <- as.numeric(df$longitude)
 df$cod_SCIAN <- as.integer(df$cod_SCIAN)
 
-########### Match codes with used SCIAN codes
+# Match codes with used SCIAN codes
 df_cod <- read.csv("CSV/SCIAN_cod.csv",header=T,as.is=T)
 establecimientos_minoristas <- sum(df$cod_SCIAN %in% df_cod$SCIAN_por_incluir) # get number of retail store
 establecimientos_todos  <- length(df$cod_SCIAN) # get total number of store
 df2 <- df[df$cod_SCIAN %in% df_cod$SCIAN_por_incluir,]
+
+################# have a frecuency table of the SCIAN Code
+tabla_frec2 <- table(df2$cod_SCIAN)
+tabla_frec_ord2 <- sort(tabla_frec2,decreasing=T) # Sort frequency table
+df_frec <- as.data.frame(as.matrix(tabla_frec_ord2)) # COnvert it to DF
+df_frec$cod_SCIAN <- row.names(df_frec) #Remove names and use them as the code column
+row.names(df_frec) <- NULL
+
+## Merge both DF so we can have a DF with the sorted value of the freq and the description of the field
+order_frec <- match(df_frec$cod_SCIAN,df_cod$SCIAN_por_incluir)
+tabla_frec2 <- data.frame(df_frec,df_cod[order_frec,])
+## Reorder columns in DF
+tabla_frec2 <- data.frame(Cod_SCIAN=tabla_frec2$cod_SCIAN,
+                          Establec=tabla_frec2$V1,
+                          Descrip=tabla_frec2$Desc)
+
+table1 <- gvisTable(tabla_frec2,options=list(page='enable',width=700,pageSize=20))
+
+# plot(table1)
+
+########################## Get frequency by "Delegación" and percentage
+tabla_frec3 <- table(df2$municip)
+tabla_frec_ord3 <- sort(tabla_frec3,decreasing=T)
+tabla_frec3<- as.data.frame(as.matrix(tabla_frec_ord3))
+tabla_frec3$deleg <- row.names(tabla_frec3)
+row.names(tabla_frec3) <- NULL
+colnames(tabla_frec3) <- c("Establec","Deleg")
+tabla_frec3 <- tabla_frec3[,c(2,1)]
+total_frec3 <- sum(tabla_frec3$Establec)
+tabla_frec3$Porcent <- round(tabla_frec3$Establec/total_frec3,3)
+
+# determine number of surveys
+total_sample <- 200
+tabla_frec3$Muestra <- ceiling(tabla_frec3$Porcent*total_sample)
+table2 <- gvisTable(tabla_frec3,options=list(page='enable',width=600, height=400))
+## plot(table2)
+
+## Get frequency by "Delegación" and percentage (without last 7 )
+tabla_frec4 <- table(df2$municip)
+tabla_frec_ord4 <- sort(tabla_frec4,decreasing=T)
+tabla_frec4<- as.data.frame(as.matrix(tabla_frec_ord4))
+tabla_frec4$deleg <- row.names(tabla_frec4)
+row.names(tabla_frec4) <- NULL
+colnames(tabla_frec4) <- c("Establec","Deleg")
+tabla_frec4 <- tabla_frec4[,c(2,1)]
+tabla_frec4 <- tabla_frec4[1:9,]
+total_frec4 <- sum(tabla_frec4$Establec)
+tabla_frec4$Porcent <- round(tabla_frec4$Establec/total_frec4,3)
+# determine number of surveys
+total_sample <- 200
+tabla_frec4$Muestra <- ceiling(tabla_frec4$Porcent*total_sample)
+table3 <- gvisTable(tabla_frec4,options=list(page='enable',width=600,height=400))
+# plot(table3)
+
 ```
 
+```{r codigo_shp_file, echo=FALSE, message=FALSE}
+### Loading shape files for "delegaciones", below all the code and links to learn more about shapefiles
+require("rgdal") # requires sp, will use proj.4 if installed
+require("maptools")
+require("ggplot2")
+require("plyr")
 
-Propuesta de muestreo para comercios minoristas en el Distrito Federal
-==================================================================
+## Plot IFE Shapefiles WITH RGDAL by entity
+### Tnks unRob for shapfiles
+## Plot  municipalities
+munici_shpf <- readOGR(dsn="/Users/RCHM/Rwork1/GitLocal/Sampling_municip/shapefiles/mar_geog_nac",
+                       layer="MUNICIPIO") ## read shapefile "MUNICIPIO"
 
-*Los textos de las gráficas y tablas pueden contener errores de codificación que dificultan la lectura, aún es está revisando como corregirlos*
+### change coordinate system of munici_shpf
+### https://stat.ethz.ch/pipermail/r-help/2013-June/355297.html
+## https://stat.ethz.ch/pipermail/r-help/2013-June/355261.html
+## somre references sistems http://www.epsg-registry.org/
+## More on manipulating shapefiles http://live.osgeo.org/en/quickstart/R_quickstart.html
+## http://stackoverflow.com/questions/16462290/obtaining-latitude-and-longitude-with-from-spatial-objects-in-r
 
-Se requiere realizar un muestreo de comercios minoristas en el Distrito Federal, con apoyo del grupo de Introducción a la Ingeniería Industrial, del Tecnológico de Monterrey, Campus Toluca
+# is.projected(munici_shpf)
+# proj4string(munici_shpf) ## get the coordinate system assigned to the shapefile
+munici_shpf <- spTransform(munici_shpf,CRS("+proj=longlat +datum=WGS84")) ## this changes the projection
 
-El muestreo se realizará bajo un enfoque de muestreo estratificado, sin embargo dada la complejidad del cuestionario y la dificultad que se tiene para estimar la información sobre la variabilidad de los resultados (variables), determinar un tamaño de muestra para cada estrato como lo propone Cochran (1977), al igual que otros recursos bibliográficos que tratan métodos de muestreo, en el cual se pueda determinar un tamaño de muestra óptimo con base en la variación de la variable de estudio no se vislumbra factible (por el momento).
+##### get only DF shapefile (lots of tests! sorry about that)
+# ogrInfo(".",layer="MUNICIPIO") # wet info of shapefile
+# class(munici_shpf)
+# plot(munici_shpf)
+# head(munici_shpf@data)
+# row.names(munici_shpf)
+# str(munici_shpf@polygons[1],max.level=4)
+filter_mex_city <- which(munici_shpf@data$ENTIDAD==9)
+municip_shpf_DF <- munici_shpf[filter_mex_city,]
+# str(municip_shpf_DF@polygons,max.level=3)
+row.names(municip_shpf_DF) <- as.character(municip_shpf_DF$NOMBRE)
+## municip_df <- munici_shpf@data[munici_shpf@data$ENTIDAD==9,]
+# municip_shpf_DF@data
+# plot(municip_shpf_DF,axes=T,border="gray")
 
-Por tal motivo, se propone una prueba piloto, con la cual se pueda muestrar una cantidad importante de comercios en la Ciudad de México (tomando como estratos cada Delegación) y que ésta información nos permita identificar el grado de precisión del estudio. A continuación se resume el proceso que se siguió para determinar el número de establecimientos y la ubicación de los establecimientos que se pretende encuestar
-
-Directorio Estadístico Nacional de Unidades Económicas [DENUE] (http://www.inegi.org.mx/est/contenidos/proyectos/denue/presentacion.aspx) 
-------------------------------------------------------
-
-La información sobre las unidades económicas se obtuvo del DENUE, que presenta información para identificar y ubicar más de 4 millones de establecimientos a nivel nacional. Para el Distrito Federal el DENUE 06/2012 provee información de más de 400,000 establecimientos
+##use that shapefile to plot in GGPLOT2
+municip_shpf_DF_asdf <- fortify(municip_shpf_DF) ## Transform into a Data frame
+# head(municip_shpf_DF_asdf,10)
+```
 
 ```{r codigo_plots, echo=FALSE, message=FALSE, warning=FALSE}
-library(ggplot2)
-library(ggmap)
+## Plot locations of stores
+###################### Plot all retail stores in Mexico City by "delegación"
+require(ggplot2)
+require(ggmap)
 
 latit <- mean(df2$latitude) ## latitude
 #latit <- 19.43315 # Mexico City Center
@@ -81,12 +164,300 @@ map <- ggmap(mapImageData,
              xlab = "Longitude",
              legend = "right")
 
+########################## Mapa all (just as an introduction image to the topic in megacities)
+
 # png("map.png",height=1280,width=1280,pointsize=1,res=300)
 mapa_all <- map + geom_point(aes(x=longitude,y=latitude,colour=clav_municip),data=df,alpha = 1/2,size=0.5)+
  theme(legend.position="none")# By "delegación"
+# dev.off()
+
+##mapa_all
+
+####################### retail / delegación
+alp <-1/2 # define alppha levelof geom_point 
+siz <-1 # define size 
+mapa_retail_deleg <- map + geom_point(aes(x=longitude,y=latitude,colour=clav_municip),
+                                data=df2,alpha = alp,size=siz)+
+ theme(legend.position="none")# By "delegación"
+mapa_retail_deleg_shpf <- mapa_retail_deleg + 
+ geom_path(data=municip_shpf_DF_asdf, ## plot the shapefile by Delegación
+                        mapping=aes(long,lat,group=group),
+                        color="#858585",
+           size=1.5)
+
+## plot 
+
+##mapa_retail_deleg_shpf
+
+## Use alpha levels to see concentration of store (ZOOM=11)
+mapImageData <-  get_googlemap(center= c(lon = longit, 
+                                         lat = latit),
+                               maptype="roadmap",
+                               zoom=11,
+                               size=c(640,640),
+                               scale=2,
+                               color="color"
+)
+
+map <- ggmap(mapImageData,
+             extent = "device", # "panel" keeps in axes, etc. or "device"
+             ylab = "Latitude",
+             xlab = "Longitude",
+             legend = "right")
+alp <-1/15 # define alpha levelof geom_point
+siz <-1.3# define size
+mapa_retail_alph <- map + geom_point(aes(x=longitude,y=latitude),
+                                data=df2,alpha = alp,size=siz, position="jitter")+
+ theme(legend.position="none")# By "delegación"
+mapa_retail_alph_shpf <- mapa_retail_alph + 
+ geom_path(data=municip_shpf_DF_asdf, ## plot the shapefile by Delegación
+           mapping=aes(long,lat,group=group),
+           color="#858585",
+           size=2.2) +
+ geom_path(data=municip_shpf_DF_asdf, ## plot the shapefile by Delegación
+           mapping=aes(long,lat,group=group),
+           color="#fbfbfb",
+           size=0.4)
+
+## plot
+## mapa_retail_alph_shpf
+
+##################### Use alpha levels to see concentration of store (ZOOM=12)
+
+#latit <- mean(df2$latitude) ## latitude
+latit <- 19.43315 # Mexico City Center
+#longit <- mean(df2$longitude) ## longitud
+longit <- -99.13327 # Mexico City Center
+mapImageData <-  get_googlemap(center= c(lon = longit, 
+                                         lat = latit),
+                               maptype="roadmap",
+                               zoom=12,
+                               size=c(640,640),
+                               scale=2,
+                               color="color"
+)
+
+map <- ggmap(mapImageData,
+             extent = "device", # "panel" keeps in axes, etc. or "device"
+             ylab = "Latitude",
+             xlab = "Longitude",
+             legend = "right")
+alp <-1/20 # define alpha levelof geom_point (1/20 interesting)
+siz <-1.95# define size
+mapa_retail_alph2 <- map + geom_point(aes(x=longitude,y=latitude),
+                                     data=df2,alpha = alp,size=siz, position="jitter")+
+ theme(legend.position="none")# By "delegación"
+mapa_retail_alph_shpf2 <- mapa_retail_alph2 + 
+ geom_path(data=municip_shpf_DF_asdf, ## plot the shapefile by Delegación
+           mapping=aes(long,lat,group=group),
+           color="#858585",
+           size=2.2) +
+ geom_path(data=municip_shpf_DF_asdf, ## plot the shapefile by Delegación
+           mapping=aes(long,lat,group=group),
+           color="#fbfbfb",
+           size=0.4)
+
+## mapa_retail_alph_shpf2
+
+###################### Use alpha levels to see concentration of store (ZOOM=12)
+
+#latit <- mean(df2$latitude) ## latitude
+latit <- 19.43315 # Mexico City Center
+#longit <- mean(df2$longitude) ## longitud
+longit <- -99.13327 # Mexico City Center
+mapImageData <-  get_googlemap(center= c(lon = longit, 
+                                         lat = latit),
+                               maptype="roadmap",
+                               zoom=13,
+                               size=c(640,640),
+                               scale=2,
+                               color="color"
+)
+
+map <- ggmap(mapImageData,
+             extent = "device", # "panel" keeps in axes, etc. or "device"
+             ylab = "Latitude",
+             xlab = "Longitude",
+             legend = "right") 
+alp <-1/10 # define alpha levelof geom_point (1/20 interesting)
+siz <-2# define size
+mapa_retail_alph3 <- map + geom_point(aes(x=longitude,y=latitude),
+                                      data=df2,alpha = alp,size=siz, position="jitter")+
+ theme(legend.position="none")# By "delegación"
+mapa_retail_alph_shpf3 <- mapa_retail_alph3 + 
+ geom_path(data=municip_shpf_DF_asdf, ## plot the shapefile by Delegación
+           mapping=aes(long,lat,group=group),
+           color="#858585",
+           size=2.2) +
+ geom_path(data=municip_shpf_DF_asdf, ## plot the shapefile by Delegación
+           mapping=aes(long,lat,group=group),
+           color="#fbfbfb",
+           size=0.4)
+
+## mapa_retail_alph_shpf3
+
+
+################################ Plot al retail stores with a heat map (zoom=11)
+## See http://blenditbayes.blogspot.mx/2013/06/visualising-crime-hotspots-in-england_25.html
+#latit <- mean(df2$latitude) ## latitude
+latit <- 19.43315 # Mexico City Center
+#longit <- mean(df2$longitude) ## longitud
+longit <- -99.13327 # Mexico City Center
+
+mapImageData <-  get_googlemap(center= c(lon = longit, 
+                                         lat = latit),
+                               maptype="roadmap",
+                               zoom=11,
+                               size=c(640,640),
+                               scale=2,
+                               color="bw"
+)
+
+map <- ggmap(mapImageData,
+             extent = "device", # "panel" keeps in axes, etc. or "device"
+             ylab = "Latitude",
+             xlab = "Longitude",
+             legend = "right")
+
+mapa_retail_densit1 <- map + 
+ stat_density2d(aes(x     =longitude,
+                    y     =latitude ,
+                    fill  =..level..,
+                    alpha =..level.. ),
+                data=df2, 
+                size = 0.3, ##Good level = 0.01
+                bins = 10,  ## Change and experiment with no. of bins ##Good level = 11
+                geom = "polygon"#, 
+                #colour = "grey95"
+                ) +
+ 
+ ## Configure the scale and panel
+ scale_fill_gradient(low = "yellow", high = "red") +
+ scale_alpha(range = c(.25, .75), guide = FALSE) +  ## Change and experiment differnet values
+
+ theme(legend.position="none")+
+ 
+ geom_path(data=municip_shpf_DF_asdf, ## plot the shapefile by Delegación
+           mapping=aes(long,lat,group=group),
+           color="#858585",
+           size=1.5)
+
+
+## mapa_retail_densit1
+
+################################ Plot al retail stores with a heat map (zoom=12)
+## See http://blenditbayes.blogspot.mx/2013/06/visualising-crime-hotspots-in-england_25.html
+#latit <- mean(df2$latitude) ## latitude
+latit <- 19.43315 # Mexico City Center
+#longit <- mean(df2$longitude) ## longitud
+longit <- -99.13327 # Mexico City Center
+
+mapImageData <-  get_googlemap(center= c(lon = longit, 
+                                         lat = latit),
+                               maptype="roadmap",
+                               zoom=12,
+                               size=c(640,640),
+                               scale=2,
+                               color="bw"
+)
+
+map <- ggmap(mapImageData,
+             extent = "device", # "panel" keeps in axes, etc. or "device"
+             ylab = "Latitude",
+             xlab = "Longitude",
+             legend = "right")
+
+mapa_retail_densit2 <- map + 
+ stat_density2d(aes(x     =longitude,
+                    y     =latitude ,
+                    fill  =..level..,
+                    alpha =..level.. ),
+                data=df2, 
+                size = 0.3, ##Good level = 0.01
+                bins = 10,  ## Change and experiment with no. of bins ##Good level = 11
+                geom = "polygon"#, 
+                #colour = "grey95"
+ ) +
+ 
+ ## Configure the scale and panel
+ scale_fill_gradient(low = "yellow", high = "red") +
+ scale_alpha(range = c(.25, .75), guide = FALSE) +  ## Change and experiment differnet values
+ 
+ theme(legend.position="none")+
+ 
+ geom_path(data=municip_shpf_DF_asdf, ## plot the shapefile by Delegación
+           mapping=aes(long,lat,group=group),
+           color="#858585",
+           size=1.5)
+
+
+## mapa_retail_densit3
+################################ Plot al retail stores with a heat map (zoom=12)
+## See http://blenditbayes.blogspot.mx/2013/06/visualising-crime-hotspots-in-england_25.html
+#latit <- mean(df2$latitude) ## latitude
+latit <- 19.43315 # Mexico City Center
+#longit <- mean(df2$longitude) ## longitud
+longit <- -99.13327 # Mexico City Center
+
+mapImageData <-  get_googlemap(center= c(lon = longit, 
+                                         lat = latit),
+                               maptype="roadmap",
+                               zoom=13,
+                               size=c(640,640),
+                               scale=2,
+                               color="bw"
+)
+
+map <- ggmap(mapImageData,
+             extent = "device", # "panel" keeps in axes, etc. or "device"
+             ylab = "Latitude",
+             xlab = "Longitude",
+             legend = "right")
+
+mapa_retail_densit3 <- map + 
+ stat_density2d(aes(x     =longitude,
+                    y     =latitude ,
+                    fill  =..level..,
+                    alpha =..level.. ),
+                data=df2, 
+                size = 0.3, ##Good level = 0.01
+                bins = 10,  ## Change and experiment with no. of bins ##Good level = 11
+                geom = "polygon"#, 
+                #colour = "grey95"
+ ) +
+ 
+ ## Configure the scale and panel
+ scale_fill_gradient(low = "yellow", high = "red") +
+ scale_alpha(range = c(.25, .75), guide = FALSE) +  ## Change and experiment differnet values
+ 
+ theme(legend.position="none")+
+ 
+ geom_path(data=municip_shpf_DF_asdf, ## plot the shapefile by Delegación
+           mapping=aes(long,lat,group=group),
+           color="#858585",
+           size=1.5)
+
+
+## mapa_retail_densit3
 
 ```
 
+
+Propuesta de muestreo para comercios minoristas en el Distrito Federal
+==================================================================
+
+*Los textos de las gráficas y tablas pueden contener errores de codificación que dificultan la lectura, aún es está revisando como corregirlos*
+
+Se requiere realizar un muestreo de comercios minoristas en el Distrito Federal, con apoyo del grupo de Introducción a la Ingeniería Industrial, del Tecnológico de Monterrey, Campus Toluca
+
+El muestreo se realizará bajo un enfoque de muestreo estratificado, sin embargo dada la complejidad del cuestionario y la dificultad que se tiene para estimar la información sobre la variabilidad de los resultados (variables), determinar un tamaño de muestra para cada estrato como lo propone Cochran (1977), al igual que otros recursos bibliográficos que tratan métodos de muestreo, en el cual se pueda determinar un tamaño de muestra óptimo con base en la variación de la variable de estudio no se vislumbra factible (por el momento).
+
+Por tal motivo, se propone una prueba piloto, con la cual se pueda muestrar una cantidad importante de comercios en la Ciudad de México (tomando como estratos cada Delegación) y que ésta información nos permita identificar el grado de precisión del estudio. A continuación se resume el proceso que se siguió para determinar el número de establecimientos y la ubicación de los establecimientos que se pretende encuestar
+
+Directorio Estadístico Nacional de Unidades Económicas [DENUE] (http://www.inegi.org.mx/est/contenidos/proyectos/denue/presentacion.aspx) 
+------------------------------------------------------
+
+La información sobre las unidades económicas se obtuvo del DENUE, que presenta información para identificar y ubicar más de 4 millones de establecimientos a nivel nacional. Para el Distrito Federal el DENUE 06/2012 provee información de más de 400,000 establecimientos
 
 ```{r grafica_all, fig.width=10, fig.height=10, echo=FALSE, warning=FALSE}
 mapa_all
@@ -94,23 +465,7 @@ mapa_all
 
 Mapa de *todos* los establecimientos en registrados en el DENUE
 
-```{r codigo_freq_codig, echo=FALSE, message=FALSE}
-################# have a frecuency table of the SCIAN Code
-tabla_frec2 <- table(df2$cod_SCIAN)
-tabla_frec_ord2 <- sort(tabla_frec2,decreasing=T) # Sort frequency table
-df_frec <- as.data.frame(as.matrix(tabla_frec_ord2)) # COnvert it to DF
-df_frec$cod_SCIAN <- row.names(df_frec) #Remove names and use them as the code column
-row.names(df_frec) <- NULL
 
-## Merge both DF so we can have a DF with the sorted value of the freq and the description of the field
-order_frec <- match(df_frec$cod_SCIAN,df_cod$SCIAN_por_incluir)
-tabla_frec2 <- data.frame(df_frec,df_cod[order_frec,])
-## Reorder columns in DF
-tabla_frec2 <- data.frame(Cod_SCIAN=tabla_frec2$cod_SCIAN,
-                          Establec=tabla_frec2$V1,
-                          Descrip=tabla_frec2$Desc)
-table1 <- gvisTable(tabla_frec2,options=list(page='enable',width=700,pageSize=20))
-```
 
 Selección de establecimientos
 ------------------------------
@@ -124,8 +479,6 @@ plot(table1)
 En el siguiente mapa se observan todas la ubicaciones de los establecimientos seleccionados de acuerdo al código SCIAN
 
 ```{r grafica_retail, fig.width=10, fig.height=10, echo=FALSE,, warning=FALSE}
-mapa_retail <- map + geom_point(aes(x=longitude,y=latitude,colour=clav_municip),data=df2,alpha = 1/2,size=0.5)+
- theme(legend.position="none")# By "delegación"
 mapa_retail
 ```
 
@@ -135,48 +488,11 @@ El muestreo de los comercios se realizará con base en la proporción de comerci
 
 Para obtener el tamaño de muestra suponemos que podremos realizar aproximadamente 120 encuestas el día de la prueba piloto (6 horas efectivas X 2 encuestas por hora X 10 equipos), pero suponiendo que no todos los locales responden a las preguntas o que puede que estén cerrados (ya que el DENUE no menciona en el status del establecimiento si se encuentra cerrado), se aproxima a 200 encuestas el tamaño de muestra.
 
-
-```{r codigo_freq_deleg, echo=FALSE , message=FALSE}
-## Get frequency by "Delegación" and percentage
-tabla_frec3 <- table(df2$municip)
-tabla_frec_ord3 <- sort(tabla_frec3,decreasing=T)
-tabla_frec3<- as.data.frame(as.matrix(tabla_frec_ord3))
-tabla_frec3$deleg <- row.names(tabla_frec3)
-row.names(tabla_frec3) <- NULL
-colnames(tabla_frec3) <- c("Establec","Deleg")
-tabla_frec3 <- tabla_frec3[,c(2,1)]
-total_frec3 <- sum(tabla_frec3$Establec)
-tabla_frec3$Porcent <- round(tabla_frec3$Establec/total_frec3,3)
-
-# determine number of surveys
-total_sample <- 200
-tabla_frec3$Muestra <- ceiling(tabla_frec3$Porcent*total_sample)
-table2 <- gvisTable(tabla_frec3,options=list(width=600,height=400))
-```
-
 ```{r plot_freq2, echo=FALSE, results='asis'}
 plot(table2)
 ```
 
 Viendo que el tamaño de muestra para cada delegación es considerablemente bajo y que algunas delegaciones tienen tamaños de muestra aún más bajos (últimos 7 registros), se pudieran quitar estas delegaciones de la muestra, además de que son las más lejanas y más grandes por lo que complicarían mucho el muestreo y sería muy difícil para los equipos viajar tanto por uno o dos puntos. El plan de muestreo queda como siguie
-
-```{r codigo_freq_deleg2, echo=FALSE, message=FALSE}
-## Get frequency by "Delegación" and percentage (without last 7 )
-tabla_frec4 <- table(df2$municip)
-tabla_frec_ord4 <- sort(tabla_frec4,decreasing=T)
-tabla_frec4<- as.data.frame(as.matrix(tabla_frec_ord4))
-tabla_frec4$deleg <- row.names(tabla_frec4)
-row.names(tabla_frec4) <- NULL
-colnames(tabla_frec4) <- c("Establec","Deleg")
-tabla_frec4 <- tabla_frec4[,c(2,1)]
-tabla_frec4 <- tabla_frec4[1:9,]
-total_frec4 <- sum(tabla_frec4$Establec)
-tabla_frec4$Porcent <- round(tabla_frec4$Establec/total_frec4,3)
-# determine number of surveys
-total_sample <- 200
-tabla_frec4$Muestra <- ceiling(tabla_frec4$Porcent*total_sample)
-table3 <- gvisTable(tabla_frec4,options=list(page='enable',width=600,height=200))
-```
 
 ```{r plot_freq3, echo=FALSE, results='asis'}
 plot(table3)
@@ -186,6 +502,8 @@ Próximos pasos
 ----------------
 
  - Para la selección de los establecimientos, se hará un muestreo aleatorio simple por cada uno de las delegaciones y se extrareá el número de establecimientos que se presenta en la columna de *Muestra* de la tabla anterior
+ 
+ 
 
 Anexo 1: Clasificación de los negocios
 -----------------------------

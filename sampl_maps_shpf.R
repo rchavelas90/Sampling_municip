@@ -7,8 +7,8 @@ require("plyr")
 ## Plot IFE Shapefiles WITH RGDAL by entity
 ### Tnks unRob for shapfiles
 ## Plot  municipalities
-setwd("shapefiles/mar_geog_nac") # set wd in which shapefiles are
-munici_shpf <- readOGR(dsn=".",layer="MUNICIPIO") ## read shapefile "MUNICIPIO"
+munici_shpf <- readOGR(dsn="/Users/RCHM/Rwork1/GitLocal/Sampling_municip/shapefiles/mar_geog_nac",
+                       layer="MUNICIPIO") ## read shapefile "MUNICIPIO"
 
 ### change coordinate system of munici_shpf
 ### https://stat.ethz.ch/pipermail/r-help/2013-June/355297.html
@@ -16,31 +16,32 @@ munici_shpf <- readOGR(dsn=".",layer="MUNICIPIO") ## read shapefile "MUNICIPIO"
 ## somre references sistems http://www.epsg-registry.org/
 ## More on manipulating shapefiles http://live.osgeo.org/en/quickstart/R_quickstart.html
 ## http://stackoverflow.com/questions/16462290/obtaining-latitude-and-longitude-with-from-spatial-objects-in-r
-summary(munici_shpf)
-is.projected(munici_shpf)
-proj4string(munici_shpf) ## get the coordinate system assigned to the shapefile
-head(municip_shpf_DF_asdf)
-munici_shpf <- spTransform(munici_shpf,CRS("+proj=longlat +datum=WGS84")) ## this changes the projectio
 
-### get only DF shapefile
-ogrInfo(".",layer="MUNICIPIO") # wet info of shapefile
-class(munici_shpf)
-plot(munici_shpf)
-head(munici_shpf@data)
+# is.projected(munici_shpf)
+# proj4string(munici_shpf) ## get the coordinate system assigned to the shapefile
+munici_shpf <- spTransform(munici_shpf,CRS("+proj=longlat +datum=WGS84")) ## this changes the projection
+
+##### get only DF shapefile (lots of tests! sorry about that)
+# ogrInfo(".",layer="MUNICIPIO") # wet info of shapefile
+# class(munici_shpf)
+# plot(munici_shpf)
+# head(munici_shpf@data)
 # row.names(munici_shpf)
-str(munici_shpf@polygons[1],max.level=4)
+# str(munici_shpf@polygons[1],max.level=4)
 filter_mex_city <- which(munici_shpf@data$ENTIDAD==9)
 municip_shpf_DF <- munici_shpf[filter_mex_city,]
-str(municip_shpf_DF@polygons,max.level=3)
+# str(municip_shpf_DF@polygons,max.level=3)
 row.names(municip_shpf_DF) <- as.character(municip_shpf_DF$NOMBRE)
 ## municip_df <- munici_shpf@data[munici_shpf@data$ENTIDAD==9,]
-municip_shpf_DF@data
-plot(municip_shpf_DF,axes=T,border="gray")
+# municip_shpf_DF@data
+# plot(municip_shpf_DF,axes=T,border="gray")
 
 ##use that shapefile to plot in GGPLOT2
 municip_shpf_DF_asdf <- fortify(municip_shpf_DF) ## Transform into a Data frame
-head(municip_shpf_DF_asdf,10)
+# head(municip_shpf_DF_asdf,10)
 
+
+####################### More tests! 
 ## plot all "municipios"
 ggplot(municip_shpf_DF_asdf) + 
  aes(long,lat,group=group,fill=id) + 
@@ -56,9 +57,6 @@ p <- ggplot()+
 p+ geom_path(data=municip_shpf_DF_asdf,
              mapping=aes(long,lat,group=group),
              color="grey")
-
-
-
 
 
 ################ learn to load shapefiles ################
