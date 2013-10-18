@@ -1,5 +1,8 @@
 ### Loading shape files for "delegaciones", below all the code and links to learn more about shapefiles
-
+require("rgdal") # requires sp, will use proj.4 if installed
+require("maptools")
+require("ggplot2")
+require("plyr")
 
 ## Plot IFE Shapefiles WITH RGDAL by entity
 ### Tnks unRob for shapfiles
@@ -35,10 +38,6 @@ municip_shpf_DF@data
 plot(municip_shpf_DF,axes=T,border="gray")
 
 ##use that shapefile to plot in GGPLOT2
-require("rgdal") # requires sp, will use proj.4 if installed
-require("maptools")
-require("ggplot2")
-require("plyr")
 municip_shpf_DF_asdf <- fortify(municip_shpf_DF) ## Transform into a Data frame
 head(municip_shpf_DF_asdf,10)
 
