@@ -7,6 +7,7 @@ To do (Sp)
 ----------
 
 - [ ] __VALIDAR EL CÓDIGO__
+- [ ] Wrapper de mapas (función para mover parámetros en lugar de repetir el código)
 - [X] Tabla de número de actividades económicas
 - [ ] Pareto de las tablas
 - [ ] Cambiar el nombre de las delegaciones
