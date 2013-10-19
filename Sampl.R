@@ -69,9 +69,9 @@ total_frec3 <- sum(tabla_frec3$Establec)
 tabla_frec3$Porcent <- round(tabla_frec3$Establec/total_frec3,3)
 
 # determine number of surveys
-total_sample <- 200
+total_sample <- 300
 tabla_frec3$Muestra <- ceiling(tabla_frec3$Porcent*total_sample)
-table2 <- gvisTable(tabla_frec3,options=list(page='enable',width=600,height=400))
+table2 <- gvisTable(tabla_frec3,options=list(page='enable',width=600,height=200,pageSize=16))
 ## plot(table2)
 
 ## Get frequency by "Delegación" and percentage (without last 7 )
@@ -86,9 +86,9 @@ tabla_frec4 <- tabla_frec4[1:9,]
 total_frec4 <- sum(tabla_frec4$Establec)
 tabla_frec4$Porcent <- round(tabla_frec4$Establec/total_frec4,3)
 # determine number of surveys
-total_sample <- 200
+total_sample <- 300
 tabla_frec4$Muestra <- ceiling(tabla_frec4$Porcent*total_sample)
-table3 <- gvisTable(tabla_frec4,options=list(page='enable',width=600,height=200))
+table3 <- gvisTable(tabla_frec4,options=list(page='enable',width=600,height=200,pageSize=16))
 # plot(table3)
 
 
