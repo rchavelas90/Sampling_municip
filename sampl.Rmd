@@ -441,6 +441,30 @@ mapa_retail_densit3 <- map +
 
 ```
 
+```{r codigo_zonas, echo=FALSE, message=FALSE, warning=FALSE}
+############### Plot sampling zones ###############
+############### see http://docs.ggplot2.org/current/geom_polygon.html for a small tutorial
+
+##Get zones per group
+zon <- read.csv("CSV/zonas.csv")
+zontol <- zon[zon$id!="CSF",]
+zoncsf <- zon[zon$id=="CSF",]
+
+## Add zones to mapa_retail_denist3_zon
+mapa_retail_densit3_zon <- mapa_retail_densit3 + 
+ geom_polygon(data=zontol, aes(x=longitude,y=latitude, group=id),
+                                 fill="#68b749",alpha=0.35)+
+ geom_polygon(data=zoncsf, aes(x=longitude,y=latitude, group=id),
+              fill="#df4031",alpha=0.35)
+
+## Zoom plot
+mapa_retail_densit3_zon2 <- 
+ mapa_retail_densit3_zon + 
+ coord_map(xlim=c(-99.11355,-99.16354), ## set limits to zoom
+           ylim=c(19.40135,19.45583))
+
+## mapa_retail_densit3_zon2
+```
 
 Propuesta de muestreo para comercios minoristas en el Distrito Federal
 ==================================================================
@@ -554,13 +578,24 @@ Este último mapa en particular muestra aquellas zonas específicas que son de i
 
 El área propuesta para realizar el muestreo es la zona oeste de dicha vialidad, evitando la zona de muestreo que realizará otro grupo de estudiantes del Tecnológico de Monterrey, Campus Santa Fé y buscando abarcar la totalidad de esta vialidad desde el Viaducto Pdte. Miguel Alemán (sur) al Circuito Interior (norte).
 
+<iframe src="http://mapsengine.google.com/map/embed?mid=zO_a6_g7SbqA.kF-rcGyjr0jw" width="1040" height="680"></iframe>
+
+*Mapa interactivo de zonas específicas de muestreo*
+
 La decisión sobre muestrear en esta vialidad se respalda también por las observaciones hechas por Juan Pablo Antún en TURBLOG (2011) sobre el Eje Central Lázaro Cárdenas, que recientemente se convirtió en el Corredor *Cero Emisiones* que prohibe el acceso de vehículos de carga en dicha vialidad. Esta medida puede resultar de particular interés para el estudio. 
+
+```{r grafica_retail_denist3_zon, fig.width=10, fig.height=10, echo=FALSE, warning=FALSE}
+mapa_retail_densit3_zon2
+```
+
+*Mapa de zonas específicas con densidad: Zona Centro de la Ciudad de México*
 
 Por hacer
 ----------
 
- - Se pretende definir puntualmente la zona geográfica en la que se hará el muestreo, el número de manzanas, calles y un estimado del número de establecimientos que se ubican en la zona del muestreo.
- - Verificar si es posible realizar un muestreo al 100% de la zona especificada y distribuir los equipos en sectores particulares.
+ - Se pretende definir puntualmente el número de manzanas, calles, un estimado del número de establecimientos que se ubican en la zona del muestreo y el área total
+ - Verificar si es posible realizar un muestreo al 100% de la zona especificada
+ - Especificar qué partes específicas corresponderán a cada equipo
 
 Anexo 1: Clasificación de los negocios
 -----------------------------

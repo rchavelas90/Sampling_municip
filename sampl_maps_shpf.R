@@ -41,6 +41,18 @@ municip_shpf_DF_asdf <- fortify(municip_shpf_DF) ## Transform into a Data frame
 # head(municip_shpf_DF_asdf,10)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 ####################### More tests! 
 ## plot all "municipios"
 ggplot(municip_shpf_DF_asdf) + 

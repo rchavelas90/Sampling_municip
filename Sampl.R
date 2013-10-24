@@ -95,6 +95,10 @@ table3 <- gvisTable(tabla_frec4,options=list(page='enable',width=600,height=200,
 
 
 
+
+
+
+
 ############ Get a sample of the retail stores ##################### 
 ############ this is only to ease the map creation, it can be removed later
 set.seed(1) # set seed to replicate results

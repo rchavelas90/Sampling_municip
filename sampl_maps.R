@@ -296,8 +296,9 @@ mapa_retail_densit3 <- map +
            color="#858585",
            size=1.5)
 
-
-## mapa_retail_densit3
+# png("map.png",height=1280,width=1280,pointsize=1,res=300)
+# mapa_retail_densit3
+# dev.off()
 
 
 
