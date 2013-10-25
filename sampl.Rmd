@@ -692,7 +692,7 @@ Por hacer
 ----------
 
  - Verificar si es posible realizar un muestreo al 100% de la zona especificada
- - Especificar qué partes específicas de la zona corresponderán a cada equipo
+ - Especificar qué partes de la zona corresponderán a cada equipo
 
 Anexo 1: Clasificación de los negocios
 -----------------------------
