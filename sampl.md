@@ -8,6 +8,8 @@
 
 
 
+
+
 Propuesta de muestreo para comercios minoristas en el Distrito Federal
 ==================================================================
 
@@ -30,14 +32,14 @@ Selección de establecimientos
 EL Sistema de Clasificación Industrial de América del Norte 2007 [SCIAN] (http://www.inegi.org.mx/sistemas/scian/contenidos/SCIAN%20M%C3%A9xico%202007%20(26enero2009\).pdf) presenta la nomenclatura usada en el DENUE para la clasificación de los establecimientos, para la selección de éstos se eligieron los siguientes tipos establecimientos, que en total equivalen a 171244 establecimientos seleccionados de un total de 429091 establecimientos y negocios que se presentan en el DENUE para el caso del Distrito Federal
 
 <!-- Table generated in R 3.0.1 by googleVis 0.4.3 package -->
-<!-- Sat Oct 19 09:31:16 2013 -->
+<!-- Thu Oct 24 18:04:14 2013 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID7bc2db57239 () {
+function gvisDataTableID1ea795b1153 () {
   var data = new google.visualization.DataTable();
   var datajson =
 [
@@ -295,8 +297,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID7bc2db57239() {
-  var data = gvisDataTableID7bc2db57239();
+function drawChartTableID1ea795b1153() {
+  var data = gvisDataTableID1ea795b1153();
   var options = {};
 options["allowHtml"] = true;
 options["page"] = "enable";
@@ -304,7 +306,7 @@ options["width"] =    700;
 options["pageSize"] =     20;
 
      var chart = new google.visualization.Table(
-       document.getElementById('TableID7bc2db57239')
+       document.getElementById('TableID1ea795b1153')
      );
      chart.draw(data,options);
     
@@ -328,9 +330,9 @@ options["pageSize"] =     20;
     pkgs.push(chartid);
 
   // Add the drawChart function to the global list of callbacks
-  callbacks.push(drawChartTableID7bc2db57239);
+  callbacks.push(drawChartTableID1ea795b1153);
 })();
-function displayChartTableID7bc2db57239() {
+function displayChartTableID1ea795b1153() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -354,11 +356,11 @@ function displayChartTableID7bc2db57239() {
  </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID7bc2db57239"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID1ea795b1153"></script>
  
 <!-- divChart -->
   
-<div id="TableID7bc2db57239"
+<div id="TableID1ea795b1153"
   style="width: 700px; height: 500px;">
 </div>
 
@@ -384,14 +386,14 @@ El muestreo de los comercios se puede realizar con base en la proporción de com
 Para obtener el tamaño de muestra suponemos que podremos realizar aproximadamente 240 encuestas el día de la prueba piloto (6 horas efectivas X 4 encuestas por hora X 10 equipos), pero suponiendo que no todos los locales responden a las preguntas o que puede que estén cerrados (ya que el DENUE no menciona en el status del establecimiento si se encuentra cerrado), además de que la distancia entre uno y otro puede ser amplia, se aproximan a 300 el número de establecimientos muestreados
 
 <!-- Table generated in R 3.0.1 by googleVis 0.4.3 package -->
-<!-- Sat Oct 19 09:31:17 2013 -->
+<!-- Thu Oct 24 18:04:14 2013 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID7bc635e13a0 () {
+function gvisDataTableID1ea49ce9e63 () {
   var data = new google.visualization.DataTable();
   var datajson =
 [
@@ -501,8 +503,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID7bc635e13a0() {
-  var data = gvisDataTableID7bc635e13a0();
+function drawChartTableID1ea49ce9e63() {
+  var data = gvisDataTableID1ea49ce9e63();
   var options = {};
 options["allowHtml"] = true;
 options["page"] = "enable";
@@ -511,7 +513,7 @@ options["height"] =    200;
 options["pageSize"] =     16;
 
      var chart = new google.visualization.Table(
-       document.getElementById('TableID7bc635e13a0')
+       document.getElementById('TableID1ea49ce9e63')
      );
      chart.draw(data,options);
     
@@ -535,9 +537,9 @@ options["pageSize"] =     16;
     pkgs.push(chartid);
 
   // Add the drawChart function to the global list of callbacks
-  callbacks.push(drawChartTableID7bc635e13a0);
+  callbacks.push(drawChartTableID1ea49ce9e63);
 })();
-function displayChartTableID7bc635e13a0() {
+function displayChartTableID1ea49ce9e63() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -561,11 +563,11 @@ function displayChartTableID7bc635e13a0() {
  </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID7bc635e13a0"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID1ea49ce9e63"></script>
  
 <!-- divChart -->
   
-<div id="TableID7bc635e13a0"
+<div id="TableID1ea49ce9e63"
   style="width: 600px; height: 200px;">
 </div>
 
@@ -573,14 +575,14 @@ function displayChartTableID7bc635e13a0() {
 Viendo que el tamaño de muestra para cada delegación es considerablemente bajo y que algunas delegaciones tienen tamaños de muestra aún más bajos (últimos 7 registros), se pudieran quitar estas delegaciones de la muestra, además de que son las más lejanas y más grandes por lo que complicarían mucho el muestreo y sería muy difícil para los equipos viajar tanto hacía cada uno de los establecimientos. El plan de muestreo quedaría como sigue
 
 <!-- Table generated in R 3.0.1 by googleVis 0.4.3 package -->
-<!-- Sat Oct 19 09:31:17 2013 -->
+<!-- Thu Oct 24 18:04:14 2013 -->
 
 
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataTableID7bc355aa057 () {
+function gvisDataTableID1ea1c009b70 () {
   var data = new google.visualization.DataTable();
   var datajson =
 [
@@ -648,8 +650,8 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartTableID7bc355aa057() {
-  var data = gvisDataTableID7bc355aa057();
+function drawChartTableID1ea1c009b70() {
+  var data = gvisDataTableID1ea1c009b70();
   var options = {};
 options["allowHtml"] = true;
 options["page"] = "enable";
@@ -658,7 +660,7 @@ options["height"] =    200;
 options["pageSize"] =     16;
 
      var chart = new google.visualization.Table(
-       document.getElementById('TableID7bc355aa057')
+       document.getElementById('TableID1ea1c009b70')
      );
      chart.draw(data,options);
     
@@ -682,9 +684,9 @@ options["pageSize"] =     16;
     pkgs.push(chartid);
 
   // Add the drawChart function to the global list of callbacks
-  callbacks.push(drawChartTableID7bc355aa057);
+  callbacks.push(drawChartTableID1ea1c009b70);
 })();
-function displayChartTableID7bc355aa057() {
+function displayChartTableID1ea1c009b70() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -708,11 +710,11 @@ function displayChartTableID7bc355aa057() {
  </script>
  
 <!-- jsChart -->  
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID7bc355aa057"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartTableID1ea1c009b70"></script>
  
 <!-- divChart -->
   
-<div id="TableID7bc355aa057"
+<div id="TableID1ea1c009b70"
   style="width: 600px; height: 200px;">
 </div>
 
@@ -767,13 +769,28 @@ Este último mapa en particular muestra aquellas zonas específicas que son de i
 
 El área propuesta para realizar el muestreo es la zona oeste de dicha vialidad, evitando la zona de muestreo que realizará otro grupo de estudiantes del Tecnológico de Monterrey, Campus Santa Fé y buscando abarcar la totalidad de esta vialidad desde el Viaducto Pdte. Miguel Alemán (sur) al Circuito Interior (norte).
 
+<iframe src="http://mapsengine.google.com/map/embed?mid=zO_a6_g7SbqA.kF-rcGyjr0jw" width="1040" height="680"></iframe>
+
+*Mapa interactivo de zonas específicas de muestreo, puede que sea necesario borrar las cookies si marca algún tipo de error*
+
 La decisión sobre muestrear en esta vialidad se respalda también por las observaciones hechas por Juan Pablo Antún en TURBLOG (2011) sobre el Eje Central Lázaro Cárdenas, que recientemente se convirtió en el Corredor *Cero Emisiones* que prohibe el acceso de vehículos de carga en dicha vialidad. Esta medida puede resultar de particular interés para el estudio. 
+
+![plot of chunk grafica_retail_denist3_zon](figure/grafica_retail_denist3_zon.png) 
+
+
+*Mapa de zonas específicas con densidad: Zona Centro de la Ciudad de México*
+
+![plot of chunk grafica_zona1](figure/grafica_zona1.png) 
+
+
+El número de establecimientos en esta zona es:898
 
 Por hacer
 ----------
 
- - Se pretende definir puntualmente la zona geográfica en la que se hará el muestreo, el número de manzanas, calles y un estimado del número de establecimientos que se ubican en la zona del muestreo.
- - Verificar si es posible realizar un muestreo al 100% de la zona especificada y distribuir los equipos en sectores particulares.
+ - Se pretende definir puntualmente el número de manzanas, calles, un estimado del número de establecimientos que se ubican en la zona del muestreo y el área total
+ - Verificar si es posible realizar un muestreo al 100% de la zona especificada
+ - Especificar qué partes específicas corresponderán a cada equipo
 
 Anexo 1: Clasificación de los negocios
 -----------------------------

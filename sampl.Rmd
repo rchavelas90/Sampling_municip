@@ -464,18 +464,96 @@ mapa_retail_densit3_zon2 <-
            ylim=c(19.40135,19.45583))
 
 ## mapa_retail_densit3_zon2
+
+#png("map.png",height=1280,width=1280,pointsize=1,res=300)
+#mapa_retail_densit3_zon2
+#dev.off()
+
+
+################ PLOT ESTABLISHMENTS PER ZONE 
+stores_zone_plot <- function(zone,alp,siz){
+## Get establishments within region
+area_i <- zon[zon$id==zone,]
+maxlat <- max(area_i$latitude)
+minlat <- min(area_i$latitude)
+maxlon <- max(area_i$longitude)
+minlon <- min(area_i$longitude)
+# maxlat;minlat;maxlon;minlon
+subset <- df2$latitude<maxlat & df2$latitude>minlat & df2$longitude>minlon & df2$longitude<maxlon
+# sum(subset)
+df3 <- df2[subset,]
+
+
+require(ggplot2)
+require(ggmap)
+
+latit <- mean(df3$latitude) ## latitude
+#latit <- 19.43315 # Mexico City Center
+longit <- mean(df3$longitude) ## longitud
+#longit <- -99.13327 # Mexico City Center
+
+mapImageData <-  get_googlemap(center= c(lon = longit, 
+                                         lat = latit),
+                               maptype="roadmap",
+                               zoom=15,
+                               size=c(640,640),
+                               scale=2,
+                               color="bw"
+)
+
+map <- ggmap(mapImageData,
+             extent = "device", # "panel" keeps in axes, etc. or "device"
+             ylab = "Latitude",
+             xlab = "Longitude",
+             legend = "right")
+
+
+mapa_retail_deleg_Z <- map + geom_point(aes(x=longitude,y=latitude),colour="#f8971b",
+                                      data=df3,alpha = alp,size=siz)+
+ theme(legend.position="none")# By "delegación"
+mapa_retail_deleg_nom_Z <- mapa_retail_deleg_Z +
+ ggtitle(paste("Zona: ",zone))
+ 
+## plot 
+mapa_retail_deleg_nom_Z
+}
+
+alp <-.6 # define alppha levelof geom_point 
+siz <-2 # define size 
+mapcsf <- stores_zone_plot("CSF",alp,siz)
+mapct1 <- stores_zone_plot("CT1",alp,siz)
+mapct2 <- stores_zone_plot("CT2",alp,siz)
+mapct3 <- stores_zone_plot("CT3",alp,siz)
+
+################ GET NUMBER OF ESTABLISHMENTS
+stores_zone_number <- function(zone){
+ ## Get establishments within region
+ area_i <- zon[zon$id==zone,]
+ maxlat <- max(area_i$latitude)
+ minlat <- min(area_i$latitude)
+ maxlon <- max(area_i$longitude)
+ minlon <- min(area_i$longitude)
+ # maxlat;minlat;maxlon;minlon
+ subset <- df2$latitude<maxlat & df2$latitude>minlat & df2$longitude>minlon & df2$longitude<maxlon
+ sum(subset)
+}
+numcsf <- stores_zone_number("CSF")
+numct1 <- stores_zone_number("CT1")
+numct2 <- stores_zone_number("CT2")
+numct3 <- stores_zone_number("CT3")
+
 ```
 
 Propuesta de muestreo para comercios minoristas en el Distrito Federal
 ==================================================================
 
-__Los textos de las gráficas y tablas pueden contener errores de codificación que dificultan la lectura, aún es está revisando como corregirlos__
+__Los textos de las gráficas y tablas pueden contener errores de codificación que dificultan la lectura, aún es está revisando como corregirlos. Cualquier comentario y sugerencia se puede realizar en el boton *Comments* y para facilitar la lectura se pueden quitar los menús en el botón *Hide Toolbars*__
 
 Se requiere realizar un muestreo de comercios minoristas en el Distrito Federal, con apoyo del grupo de Introducción a la Ingeniería Industrial, del Tecnológico de Monterrey, Campus Toluca. En total se contará con el apoyo de 80 alumnos, dirigidos por 10 tutores alumnos de la carrera de Ingeniería Industrial y de Sistemas. El grupo se dedicará principalmente a encuestar a los establecimientos seleccionados, la encuesta fue elaboradas por el [Megacity Logistics Lab] (http://megacitylab.mit.edu/) y se trabajará a la par con un grupo de alumnos del Tecnológico de Monterrey, Campus Santa Fe
 
-Una prupuesta para la realización del muestreo es que se se realice bajo un enfoque de muestreo estratificado, sin embargo dada la complejidad del cuestionario y la dificultad que se tiene para estimar la información sobre la variabilidad de los resultados (variables), determinar un tamaño de muestra para cada estrato como lo propone Cochran (1977), al igual que otros recursos bibliográficos que tratan métodos de muestreo, en el cual se pueda determinar un tamaño de muestra óptimo con base en la variación de la variable de estudio no se vislumbra factible (por el momento).
+Una prupuesta para la realización del muestreo es que se realice bajo un enfoque de muestreo estratificado, sin embargo dada la complejidad del cuestionario y la dificultad que se tiene para estimar la información sobre la variabilidad de los resultados, determinar un tamaño de muestra para cada estrato como lo propone Cochran (1977), al igual que otros recursos bibliográficos que tratan métodos de muestreo, en el cual se pueda determinar un tamaño de muestra óptimo con base en la variación de la variable de estudio no se vislumbra factible (por el momento).
 
-Por tal motivo, se propone una prueba piloto, con la cual se pueda muestrar una cantidad importante de comercios en la Ciudad de México y que ésta información nos permita identificar el grado de precisión del estudio. A continuación se resume el proceso que se siguió para determinar el número de establecimientos y la ubicación de los establecimientos que se pretende encuestar
+Por tal motivo, se propone una prueba piloto, con la cual se pueda muestrar una cantidad importante de comercios en la Ciudad de México y que esta información nos permita identificar el grado de precisión del estudio. A continuación se resume el proceso que se siguió para determinar el número de establecimientos y la ubicación de los establecimientos que se pretende encuestar
 
 Directorio Estadístico Nacional de Unidades Económicas [DENUE] (http://www.inegi.org.mx/est/contenidos/proyectos/denue/presentacion.aspx) 
 ------------------------------------------------------
@@ -485,7 +563,7 @@ La información sobre las unidades económicas se obtuvo del DENUE, que presenta
 Selección de establecimientos
 ------------------------------
 
-EL Sistema de Clasificación Industrial de América del Norte 2007 [SCIAN] (http://www.inegi.org.mx/sistemas/scian/contenidos/SCIAN%20M%C3%A9xico%202007%20(26enero2009\).pdf) presenta la nomenclatura usada en el DENUE para la clasificación de los establecimientos, para la selección de éstos se eligieron los siguientes tipos establecimientos, que en total equivalen a `r establecimientos_minoristas` establecimientos seleccionados de un total de `r establecimientos_todos` establecimientos y negocios que se presentan en el DENUE para el caso del Distrito Federal
+EL Sistema de Clasificación Industrial de América del Norte 2007 [SCIAN] (http://www.inegi.org.mx/sistemas/scian/contenidos/SCIAN%20M%C3%A9xico%202007%20(26enero2009\).pdf) presenta la nomenclatura usada en el DENUE para la clasificación de los establecimientos, para la selección de éstos se eligieron los siguientes tipos establecimientos, que en total equivalen a `r establecimientos_minoristas` establecimientos minoristas seleccionados de un total de `r establecimientos_todos` establecimientos y negocios que se presentan en el DENUE para el caso del Distrito Federal
 
 ```{r print_freq_codig,echo=FALSE, results='asis'}
 plot(table1)
@@ -501,7 +579,7 @@ mapa_retail_deleg_shpf
 
 Se observa que ciertas delegaciones como la delegación Cuauhtémoc (color rosa fuerte) y Benito Juárez (color morado, en la parte central) la concentración de establecimientos minoristas es aparentemente mayor que en otras delegaciones.
 
-Propuestas para la realizaión del muestreo de comercios minoristas
+Propuestas para la realización del muestreo de comercios minoristas
 -----------------------------------------------------------------
 
 __Esta sección resume el análisis de datos realizado para identificar la mejor alternativa de muestreo con base en la información que se presenta en el DENUE__
@@ -510,7 +588,7 @@ __Esta sección resume el análisis de datos realizado para identificar la mejor
 
 El muestreo de los comercios se puede realizar con base en la proporción de comercios que se encuentran en cada delegación, Cochran menciona que la precisión adquirida bajo este esquema es menor a la que se obtiene si se utiliza una selección óptima de tamaños de muestra para un muestreo estratificado, pero el método de selección por proporción es ideal para la prueba piloto, a continuación se muestra la tabla con el número de establecimientos por delegación y el porcentaje que representa del total.
 
-Para obtener el tamaño de muestra suponemos que podremos realizar aproximadamente 240 encuestas el día de la prueba piloto (6 horas efectivas X 4 encuestas por hora X 10 equipos), pero suponiendo que no todos los locales responden a las preguntas o que puede que estén cerrados (ya que el DENUE no menciona en el status del establecimiento si se encuentra cerrado), además de que la distancia entre uno y otro puede ser amplia, se aproximan a 300 el número de establecimientos muestreados
+Para obtener el tamaño de muestra suponemos que podremos realizar aproximadamente 240 encuestas (debido a la lejanía de los establecimientos entre sí) el día de la prueba piloto (6 horas efectivas X 4 encuestas por hora X 10 equipos), pero suponiendo que no todos los locales responden a las preguntas o que puede que estén cerrados (ya que el DENUE no menciona en el status del establecimiento si se encuentra cerrado), además de que la distancia entre uno y otro puede ser muy amplia, se aproximan a 300 el número de establecimientos por muestrear
 
 ```{r plot_freq2, echo=FALSE, results='asis'}
 plot(table2)
@@ -524,7 +602,7 @@ plot(table3)
 
 Para la selección de los establecimientos, es posible realizar un muestreo aleatorio simple por cada una de las delegaciones y extraer el número de establecimientos que se presenta en la columna de *Muestra* de la tabla anterior.
 
-Esta propuesta presenta algunas ventajas y desventajas que quisieramos resaltar. Primero que nada cumple con ciertos criterios de aleatoriedad e independencia de los datos seleccionados, por lo cual los resultados que se obtuvieran de dicho plan serían muy confiables (en relación a otros métodos de muestreo). Sin embargo, existen ciertas limitaciones que podrían ocasionar problemas al realizarlo con este método. La principal desventaja que se puede presentar es que los establecimientos se encuentren muy alejados unos de otros, en pruebas realizadas con la metodología que se porpone al seleccionar un tamaño de muestra con base en la proporción de establecimientos por delegación, se observó que (1) la dispersión de establecimientos crece en proporción al tamaño de la delegación, por lo que las personas encargadas de encuestar en dichas delegaciones podrían tener un número menor de éxitos al no poder cumplir con el número asignado de encuestas y (2) debido a que la base de datos del DENUE no garantiza que un establecimiento esté en las coordenadas que se presentan, es posible que se recorran grandes distancias sólo para encontrar que el establecimiento no existe. Por estas razones, se propone la siguiente metodología que busca incrementar el número de encuestas exitosas, concentrar al grupo en zonas con una mayor cantidad de establecimientos y __estudiar el comportamiento de locales en zonas particularmente densas__, lo cual facilitaría el traslado de los equipos y haría más segura su participación en este proyecto.
+Esta propuesta presenta algunas ventajas y desventajas que quisieramos resaltar. Primero que nada cumple con ciertos criterios de aleatoriedad e independencia de los datos seleccionados, por lo cual los resultados que se obtuvieran de dicho plan serían muy confiables (en relación a otros métodos de muestreo). Sin embargo, existen ciertas limitaciones que podrían ocasionar problemas, la principal desventaja que se puede presentar es que los establecimientos se encuentren muy alejados unos de otros, en pruebas realizadas con la metodología que se porpone al seleccionar un tamaño de muestra con base en la proporción de establecimientos por delegación, se observó que (1) la dispersión de establecimientos crece en proporción al tamaño de la delegación, por lo que las personas encargadas de encuestar en dichas delegaciones podrían tener un número menor de éxitos al no poder cumplir con el número asignado de encuestas y (2) debido a que la base de datos del DENUE no garantiza que un establecimiento esté en las coordenadas que se presentan, es posible que se recorran grandes distancias sólo para encontrar que el establecimiento no existe. Por estas razones, se propone la siguiente metodología que busca incrementar el número de encuestas exitosas, concentrar al grupo en zonas con una mayor cantidad de establecimientos y __estudiar el comportamiento de locales en zonas particularmente densas__, lo cual facilitaría el traslado de los equipos y haría más segura su participación en este proyecto.
 
 ### Propuesta 2: Muestreo por zonas con una gran densidad de establecimientos minoristas
 
@@ -550,11 +628,11 @@ mapa_retail_alph_shpf3
 
 En este último mapa, se observa la gran diferencia que existe entre la zona centro y otras regiones del Distrito Federal. Notese que cada establecimiento está representado por un punto con un nivel de transparencia de **1/20**, lo que significa que cada punto completamente obscuro representa por lo menos veinte establecimientos en una zona geográfica sumamente reducida. Vease por [ejemplo](https://maps.google.com/maps?q=19.438876,-99.126514&layer=c&sll=19.438924,-99.126134&cbp=11,3.35,,0,14.53&cbll=19.438823,-99.126133&hl=en&ie=UTF8&ll=19.438823,-99.12613&spn=0.003076,0.009956&t=h&z=17&vpsrc=0&iwloc=A&panoid=RSA73v5yi4QxjBz1C9baJw). Así mismo, se puede observar claramente la plaza central de la ciudad (Zócalo), que muestra un espacio libre de puntos dentro del recuadro principal.
 
-Estas imagenes nos dan una idea de la distribución de los establecimientos en zonas altamente densas, lo cual confirma también la importancia del análisis de _la última milla_ y los esfuerzos realizados por el [Megacity Logistics Lab] (http://megacitylab.mit.edu/) en la Ciudad de México por estudiar dicho fenómeno. 
+Estas imágenes nos dan una idea de la distribución de los establecimientos en zonas altamente densas, lo cual confirma también la importancia del análisis de _la última milla_ y los esfuerzos realizados por el [Megacity Logistics Lab] (http://megacitylab.mit.edu/) en la Ciudad de México por estudiar dicho fenómeno. 
 
 Con el fin de identificar con mayor precisión las zonas geográficas adecuadas para realizar el muestreo, se sigue también un análisis de densidad en 2D, también llamado _Heat maps_ o _Hotspots_. Se presentan a continuación tres mapas con el mismo nivel de acercamiento utilizado anteriormente. Notese que se confirma que la zona centro de la Ciudad de México es el punto de mayor densidad, en específico la delegación Cuauhtémoc y que la densidad en otros puntos de la Ciudad no es comparable con la que se presenta en la zona centro.
 
-*Nota: las curvas de nivel en cada mapa representan la densidad de establecimientos por sector, los colores y las transparencias varían de acuerdo al número de establecimientos (entre más establecimientos, más rojo y menos transparente). Es importante observar que el nivel de detalle aumenta conforme se reduce la zona de visualización y los mapas no son simplemente una ampliación del mapa anterior, lo cual permite observar con mayor claridad las zonas que pudieran resultar de interés para hacer el muestreo*
+*Nota: las curvas de nivel en cada mapa representan la densidad de establecimientos, los colores y las transparencias varían de acuerdo al número de establecimientos (entre más establecimientos, más rojo y menos transparente). Es importante observar que el nivel de detalle aumenta conforme se reduce la zona de visualización y los mapas no son simplemente una ampliación del mapa anterior, lo cual permite observar con mayor claridad las zonas que pudieran resultar de interés para hacer el muestreo.*
 
 ```{r grafica_retail_denist1, fig.width=10, fig.height=10, echo=FALSE, warning=FALSE}
 mapa_retail_densit1
@@ -576,13 +654,13 @@ mapa_retail_densit3
 
 Este último mapa en particular muestra aquellas zonas específicas que son de interés para el muestreo propuesto. Se observa claramente que la zona noreste del Zócalo es la región con mayor densidad de establecimientos en la Ciudad, esto debido a que en dicha zona se ubican una gran cantidad de mercados, tianguis y comercios. También se observa que el Eje Central Lázaro Cárdenas presenta una gran cantidad de comercios minoristas en toda su extensión, desde el Viaducto (al sur), hasta el Circuito Interior (al norte), además de ser una zona relativamente segura.
 
-El área propuesta para realizar el muestreo es la zona oeste de dicha vialidad, evitando la zona de muestreo que realizará otro grupo de estudiantes del Tecnológico de Monterrey, Campus Santa Fé y buscando abarcar la totalidad de esta vialidad desde el Viaducto Pdte. Miguel Alemán (sur) al Circuito Interior (norte).
+El área propuesta para realizar el muestreo es la zona oeste de dicha vialidad, evitando la zona de muestreo que realizará otro grupo de estudiantes del Tecnológico de Monterrey, Campus Santa Fe y buscando abarcar la totalidad de esta vialidad desde el Viaducto Pdte. Miguel Alemán (sur) al Circuito Interior (norte).
 
 <iframe src="http://mapsengine.google.com/map/embed?mid=zO_a6_g7SbqA.kF-rcGyjr0jw" width="1040" height="680"></iframe>
 
-*Mapa interactivo de zonas específicas de muestreo*
+*Mapa interactivo de zonas específicas de muestreo, puede que sea necesario borrar las cookies si marca algún tipo de error, reiniciar el navegador o iniciar en modo de navegación privada en el buscador*
 
-La decisión sobre muestrear en esta vialidad se respalda también por las observaciones hechas por Juan Pablo Antún en TURBLOG (2011) sobre el Eje Central Lázaro Cárdenas, que recientemente se convirtió en el Corredor *Cero Emisiones* que prohibe el acceso de vehículos de carga en dicha vialidad. Esta medida puede resultar de particular interés para el estudio. 
+La decisión sobre muestrear en esta vialidad se respalda también por las observaciones hechas por Juan Pablo Antún en TURBLOG (2011) sobre el Eje Central Lázaro Cárdenas, que recientemente se convirtió en el Corredor *Cero Emisiones* que prohibe el acceso de vehículos de carga en dicha vialidad. Esta medida puede resultar de particular interés para el estudio. A continuación se muestra el mapa de las zonas específicas de muestreo sobre el mapa de calor. La zona verde corresponde al muestreo que realizará el equipo del Campus Toluca y la zona roja el equipo de Campus Santa Fe 
 
 ```{r grafica_retail_denist3_zon, fig.width=10, fig.height=10, echo=FALSE, warning=FALSE}
 mapa_retail_densit3_zon2
@@ -590,12 +668,31 @@ mapa_retail_densit3_zon2
 
 *Mapa de zonas específicas con densidad: Zona Centro de la Ciudad de México*
 
+Para aproximar el número de establecimientos por analizar, se toma un área rectangular que abarca la totalidad del área de muestreo y con base en esta se estima el tamaño de la muestra. A continuación se presenta la ubicación de los establecimientos por zona y el número estimado.
+
+```{r grafica_zona1, fig.width=7, fig.height=7, echo=FALSE, warning=FALSE}
+mapct1
+```
+
+*El número de establecimientos en esta zona es de: `r numct1`*
+
+```{r grafica_zona1, fig.width=7, fig.height=7, echo=FALSE, warning=FALSE}
+mapct2
+```
+
+*El número de establecimientos en esta zona es de: `r numct2`*
+
+```{r grafica_zona1, fig.width=7, fig.height=7, echo=FALSE, warning=FALSE}
+mapct3
+```
+
+*El número de establecimientos en esta zona es de: `r numct3`*
+
 Por hacer
 ----------
 
- - Se pretende definir puntualmente el número de manzanas, calles, un estimado del número de establecimientos que se ubican en la zona del muestreo y el área total
  - Verificar si es posible realizar un muestreo al 100% de la zona especificada
- - Especificar qué partes específicas corresponderán a cada equipo
+ - Especificar qué partes específicas de la zona corresponderán a cada equipo
 
 Anexo 1: Clasificación de los negocios
 -----------------------------
@@ -622,8 +719,8 @@ Anexo 3: Otras Consideraciones
 
 *No deben registrar servicios o que vendan productos desconocidos
 *No registrar tiendas departamentales: Establecimientos grandes, con un amplio surtido de ropa, electrodomésticos, muebles, entre otras.
-
-** Para capacitación: Como "maximizar" las respuestas obtenidas? 
+* Qué hacer en caso de que no se responda la totalidad de la encuesta?
+* Para capacitación: Como "maximizar" las respuestas obtenidas? 
 
 *Referencias*
 
